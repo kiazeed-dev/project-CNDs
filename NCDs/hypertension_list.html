@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <title>NCDs</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/extra-libs/multicheck/multicheck.css">
+    <link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="dist/css/style.min.css" rel="stylesheet">
+    <script type="text/javascript">
+        var str = String(window.location);
+        // var res = str.split('?');
+        switch (navigator.appName) {
+        case 'Microsoft Internet Explorer':
+        // alert('ie');
+        if (window.name != 'prime') {
+        window.name = 'prime';
+        window.open(window.location.href, 'prime')
+        alert(str);
+        StartThis('chrome.exe "' + str + '"');
+        window.close();
+        }
+        break;
+        default:
+        }
+        
+        function StartThis(CommandToRun) {
+        var shellObject = new ActiveXObject("wscript.Shell");
+        shellObject.run(CommandToRun)
+        }
+    </script>
+    <script src="js/hypertension_list.js"></script>
+</head>
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper" class="mini-sidebar">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin5">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                    <a class="navbar-brand" href="index.html">
+                        <!-- Logo icon -->
+                        <b class="logo-icon" >
+                            <i  class="mdi-48px mdi mdi-heart-pulse"></i>
+                        </b>
+                        <span class="light-logo" >
+                            <h3>NCDs</h3>
+                        </span>
+                    </a>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                    <ul class="navbar-nav float-left mr-auto">
+                        <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" href="index.html">
+                             <span class="d-none d-md-block" > ข้อมูลส่วนตัว</span>  
+                            </a>         
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" href="hypertension-visit.html">
+                                <span class="d-none d-md-block" > ข้อมูลการตรวจตามวันนัด</span>
+                            </a>                              
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" href="summaryVisit.html">
+                                <span class="d-none d-md-block" > สรุปประจำปี</span>
+                            </a>                              
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav float-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img id="img_user" src="assets/images/users/1.png" alt="user"  width="35"></a>
+                            <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                                <a class="dropdown-item" ><i class="ti-user m-r-5 m-l-5"></i><span id="empID"></span> </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+                                <div class="dropdown-divider"></div> -->
+                                <a class="dropdown-item" href="login.html"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar" data-sidebarbg="skin5">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav" class="p-t-30">
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="index.html" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Forms</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="patient_list.html" aria-expanded="false"><i class="mdi mdi-account-outline"></i><span class="hide-menu">Patient List</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="hypertension_list.html" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">NCDs List</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="appointment.html" aria-expanded="false"><i class="mdi mdi-note-multiple"></i><span class="hide-menu">NCDs Appointment</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://192.168.24.36:90/Views/NCDsDashboard.aspx"  target="_blank" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">NCDs Dashboard</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://192.168.24.36:90/Views/NCDs.aspx"  target="_blank" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">NCDs Report</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="page-wrapper">
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-12 d-flex no-block align-items-center">
+                        <h4 class="page-title">Patient List</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <label for="cono1" class="col-sm-1 text-right control-label col-form-label">StartDate</label>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <input type="date" class="form-control" id="dateStartdate" value="">
+                        </div>
+                    </div>
+                    <label for="cono1" class="col-sm-1 text-right control-label col-form-label">EndDate</label>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <input type="date" class="form-control" id="dateEnddate" value="">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-primary" id="butSearch" onclick="_hypertensionListbydate()">Search</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table id="example" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2" style="text-align:center;">No.</th>
+                                                <th rowspan="2" style="text-align:center;">Date for Register</th>
+                                                <th rowspan="2" style="text-align:center;">HN</th>
+                                                <th rowspan="2" style="text-align:center;">Name</th>
+                                                <th rowspan="2" style="text-align:center;">Sex</th>
+                                                <th rowspan="2" style="text-align:center;">Age</th>
+                                                <th rowspan="2" style="text-align:center;">Nation</th>
+                                                <th colspan="17" style="text-align:center;">Disease</th>
+                                                <th rowspan="2" style="text-align:center;">Doctor</th>
+                                                <th rowspan="2" style="text-align:center;">แผนก</th>
+                                                <th rowspan="2" style="text-align:center;">Current Medicine</th>
+                                                <th rowspan="2" style="text-align:center;">BW</th>
+                                                <th rowspan="2" style="text-align:center;">High</th>
+                                                <th rowspan="2" style="text-align:center;">BMI</th>
+                                                <th rowspan="2" style="text-align:center;">WC</th>
+                                                <th colspan="10" style="text-align:center;">Cardiovascular Screening</th>
+                                                <th colspan="5" style="text-align:center;">Lipid Lab</th>
+                                                <th colspan="3" style="text-align:center;">DM Screening</th>
+                                                <th colspan="6" style="text-align:center;">Kidney Screening</th>
+                                                <th colspan="4" style="text-align:center;">CBC</th>
+                                                <th colspan="6" style="text-align:center;">Electrolyte</th>
+                                                <th rowspan="2" style="text-align:center;">Uric Acid</th>
+                                                <th rowspan="2" style="text-align:center;">CXR</th>
+                                                <th colspan="2" style="text-align:center;">Eye Screeing</th>
+                                                <th colspan="3" style="text-align:center;">Vacccine </th>
+                                                <th rowspan="2" style="text-align:center;">Foot Screeing</th>
+                                                <th rowspan="2" style="text-align:center;">Next plan/investtigate/Consult</th>
+                                                <th rowspan="2" style="text-align:center;">Next Date Appointment</th>
+                                                <th rowspan="2" style="text-align:center;">Next plan/investtigate/ Consult</th>
+                                                <th rowspan="2" style="text-align:center;">Next Date Appointment</th>
+                                            </tr>
+                                            <tr>
+                                                <th>HT</th>
+                                                <th>DLP</th>
+                                                <th>DM</th>
+                                                <th>Premature family history of CAD</th>
+                                                <th>AF</th>
+                                                <th>CAD</th>
+                                                <th>Stroke</th>
+                                                <th>PAD</th>
+                                                <th>CKD</th>
+                                                <th>CHF</th>
+                                                <th>COPD</th>
+                                                <th>Asthma</th>
+                                                <th>Gout</th>
+                                                <th>Smoking</th>
+                                                <th>OSA</th>
+                                                <th>Obesity</th>
+                                                <th>Other</th>
+                                                <th>pressure_max</th>
+                                                <th>pressure_min</th>
+                                                <th>home_bp</th>
+                                                <th>pulse</th>
+                                                <th>CV Risk</th>
+                                                <th>EKG</th>
+                                                <th>ABI/CAVI</th>
+                                                <th>ECHO</th>
+                                                <th>EST</th>
+                                                <th>CACs</th>
+                                                <th>Cholesterol</th>
+                                                <th>Triglyceride</th>
+                                                <th>HDL</th>
+                                                <th>LDL_Direct</th>
+                                                <th>LDL</th>
+                                                <th>POCT(Glucoseปลายนิ้ว)</th>
+                                                <th>Glucose</th>
+                                                <th>HbA1C</th>
+                                                <th>Creatinine</th>
+                                                <th>Creatinine_GFR</th>
+                                                <th>UrineProtein</th>
+                                                <th>UrineRBC</th>
+                                                <th>UrineMicroalbumin</th>
+                                                <th>CreatinineRatio</th>
+                                                <th>Hb</th>
+                                                <th>Hematocrit</th>
+                                                <th>WBC</th>
+                                                <th>Plt.</th>
+                                                <th>Sodium</th>
+                                                <th>Potassium</th>
+                                                <th>CI</th>
+                                                <th>TC02</th>
+                                                <th>Phospho</th>
+                                                <th>Mg</th>
+                                                <th>DiabeticRetinopathy(DR)</th>
+                                                <th>HypertensiveRetinopathy</th>
+                                                <th>Influenza(Flu)Vaccine</th>
+                                                <th>Prevnar-13</th>
+                                                <th>Pneumovax-23 </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer text-center">
+                All Rights Reserved by BPK. Designed and Developed by <a href="">BPK</a>.
+            </footer>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalWait" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true ">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="H8">...ระบบกำลังดำเนินการ กรุณารอสักครู่...</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document" style="height:250px; width:800px;">  
+                        <span class="fa fa-spinner fa-pulse fa-3x fa-fw"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="dist/js/custom.min.js"></script>
+    <!-- this page js -->
+    <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
+    <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
+    <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+    <script>
+        $('#zero_config').DataTable();
+        document.getElementById("empID").innerHTML = ""+sessionStorage.userID+""
+        $( document ).ready(function() {
+            console.log( "ready!" );
+            var m = new Date();
+            var dateString = m.getUTCFullYear() +"-"+ (m.getUTCMonth()+1) +"-"+ m.getUTCDate();
+            document.getElementById("dateStartdate").value = m.getUTCFullYear() +"-01-01";
+            var twoenddate = m.getUTCDate()+"";if(twoenddate.length==1)	twoenddate="0" +twoenddate;
+            document.getElementById("dateEnddate").value = m.getUTCFullYear() +"-"+ (m.getUTCMonth()+1) +"-"+ twoenddate;
+            _hypertensionList()
+            //_patientList();
+            if(sessionStorage.userID != null){
+                _hypertensionListbydate();
+            }else{
+                window.location = "login.html";
+            }
+        });
+        function logout(){
+            localStorage.clear();
+            sessionStorage.clear();
+        }
+    </script>
+</body>
+</html>

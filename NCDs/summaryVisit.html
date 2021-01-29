@@ -1,0 +1,729 @@
+<!-- 718    window.location = "login.html";-->
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <title>NCDs </title>
+    <!-- Custom CSS -->
+    <link href="assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/libs/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/libs/jquery-minicolors/jquery.minicolors.css">
+    <link rel="stylesheet" type="text/css" href="assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/libs/quill/dist/quill.snow.css">
+    <link href="dist/css/style.min.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        var str = String(window.location);
+        // var res = str.split('?');
+        switch (navigator.appName) {
+        case 'Microsoft Internet Explorer':
+        // alert('ie');
+        if (window.name != 'prime') {
+        window.name = 'prime';
+        window.open(window.location.href, 'prime')
+        alert(str);
+        StartThis('chrome.exe "' + str + '"');
+        window.close();
+        }
+        break;
+        default:
+        }
+        
+        function StartThis(CommandToRun) {
+        var shellObject = new ActiveXObject("wscript.Shell");
+        shellObject.run(CommandToRun)
+        }
+    </script>
+    <script src="script/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="script/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="script/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="script/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <link rel="stylesheet" href="script/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+    <script src="script/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="script/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="js/summaryVisit.js"></script>
+</head>
+
+<style> 
+    input.largerCheckbox { 
+        width: 20px; 
+        height: 20px; 
+    } 
+</style> 
+
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper" class="mini-sidebar">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin5">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <a class="navbar-brand" href="index.html">
+                        <!-- Logo icon -->
+                        <b class="logo-icon" >
+                            <i  class="mdi-48px mdi mdi-heart-pulse"></i>
+                        </b>
+                        <span class="light-logo" ><h3>Hypertension</h3></span>
+                    </a>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                    <ul class="navbar-nav float-left mr-auto">
+                        <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
+
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" href="index.html">
+                             <span class="d-none d-md-block" > ข้อมูลส่วนตัว</span>  
+                            </a>         
+                        </li>
+                        <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" href="hypertension-visit.html">
+                                 <span class="d-none d-md-block" > ข้อมูลการตรวจตามวันนัด</span>
+                                </a>                              
+                        </li>
+                        <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" href="summaryVisit.html">
+                                 <span class="d-none d-md-block" > สรุปประจำปี</span>
+                                </a>                              
+                        </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img id="img_user" src="assets/images/users/1.png" alt="user" width="35"></a>
+                            <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                                <a class="dropdown-item" ><i class="ti-user m-r-5 m-l-5"></i><span id="empID"></span> </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="login.html"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar" data-sidebarbg="skin5">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav" class="p-t-30">
+                      
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="index.html" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Forms</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="patient_list.html" aria-expanded="false"><i class="mdi mdi-account-outline"></i><span class="hide-menu">Patient List</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="hypertension_list.html" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">NCDs List</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="appointment.html" aria-expanded="false"><i class="mdi mdi-note-multiple"></i><span class="hide-menu">NCDs Appointment</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://192.168.24.36:90/Views/NCDsDashboard.aspx"  target="_blank" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">NCDs Dashboard</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://192.168.24.36:90/Views/NCDs.aspx"  target="_blank" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">NCDs Report</span></a></li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-12 d-flex no-block align-items-center">
+                        <h4 class="page-title">สรุปประจำปี <i class="mdi mdi-information-outline" id="ts-info"></i></h4> 
+                        <div class="ml-auto text-right">
+                            <nav aria-label="breadcrumb">
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- Page Content -->
+            <div class="card">         
+                <form>
+                    <div class="p-20">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                <!-- table -->
+                                    <div class='table-responsive'>
+                                        <table id="zero_config" class="table table-bordered table-hover">
+                                            <div id="arrowicon_left"></div>
+                                            <div id="arrowicon_right"></div>
+                                            <br>
+                                        <thead>
+                                            <tr id="header_table">
+                                                <td width='20%' rowspan="0" align="center"  valign="middle"><strong>มาตรฐานการดูแลโรคความดันโลหิตสูง</strong></td>
+                                                <td colspan="4" align="center" ><strong>สรุปประจำปีผู้ป่วยได้รับการตรวจตามมาตรฐาน</strong></td>                                             
+                                            </tr>
+                                            <tr id="column_yearHeader"></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td width="100%" colspan="5" align="left" bgcolor="#DCDCDC"><strong>BP Control</strong></td>                                         
+                                            </tr>
+                                                <tr id="sumBPn_data">
+                                                    <td><label class="col-md-12 text-left">BP <= 130/80 mmHg (%) </label></td>
+                                                </tr>
+                                                <tr id="sumBPh_data">
+                                                    <td><label class="col-md-12 text-left">BP <= 140/90 mmHg (%) </label></td>
+                                                </tr>
+                                            <tr>
+                                                <td width="100%" colspan="5" align="left" bgcolor="#DCDCDC"><strong>การดูแลและติดตาม</strong></td>
+                                            </tr>
+                                                <tr id="NutritionistRecommand_data">
+                                                    <td><label class="col-md-12 text-left">ประเมินการคุมอาหารโดยนักโภชนาการ</label></td>
+                                                </tr>
+                                                <tr id="ExerciseRate_data">
+                                                    <td><label class="col-md-12 text-left">Exercise > 30 min (3 days/wk)</label></td>
+                                                </tr>
+                                                <tr id="AlcoholRecommand_data">
+                                                    <td><label class="col-md-12 text-left">แนะนำเลิกแอลกอฮอร์ : Alcohol</label></td>
+                                                </tr>
+                                                <tr id="SmokingRecommand_data">
+                                                    <td><label class="col-md-12 text-left">แนะนำเลิกสูบบุหรี่</label></td>
+                                                </tr>                                                            
+                                                <tr id="SleepRate_data">
+                                                    <td><label class="col-md-12 text-left">ประเมินการนอนหลับ เช่น นอนกรน หยุดหายใจขณะหลับ</label></td>
+                                                </tr>
+                                                <tr id="AppointmentRate_data">
+                                                    <td><label class="col-md-12 text-left">ตรวจตามนัดสม่ำเสมอ(ช้าได้ภายใน 1 เดือนหลังนัด) *</label></td>
+                                                </tr>
+                                                <tr id="Medication_frequency_data">
+                                                    <td><label class="col-md-12 text-left">รับประทานยาสม่ำเสมอ (%)</label></td>
+                                                </tr>
+                                                <tr id="FluVaccine_data">
+                                                    <td><label class="col-md-12 text-left">Influenza (Flu) Vaccine *</label></td>
+                                                </tr>
+                                                <tr id="PneumococcalVaccine_data">
+                                                    <td id="Pneumococcal-status" bgcolor=""><label class="col-md-12 text-left">Pneumococcal Vaccine อายุ > 65 ปี * </label></td>   
+                                                </tr>
+                                            <tr>
+                                                <td width="100%" colspan="5" align="left" bgcolor="#DCDCDC" ><strong>Cardiovascular evaluation</strong></td>
+                                            </tr>
+                                                <tr id="diabetesFBS_HbA1C_data">
+                                                    <td><label class="col-md-12 text-left">ประเมินเบาหวาน (FBS, HbA1C)</label></td>
+                                                </tr>
+                                                <tr id="lipidprofile_data">
+                                                    <td><label class="col-md-12 text-left">ประเมินระดับ Lipid Profile(Lipid,LDL)</label> </td> 
+                                                </tr>
+                                                <tr id="kidneyCr_GFR_data">
+                                                    <td><label class="col-md-12 text-left">ประเมินการทำงานของไต (Cr, GFR) </label></td>
+                                                </tr>
+                                                <tr id="kidneyProteinuria_data">
+                                                    <td><label class="col-md-12 text-left">ประเมินการทำงานของไต (Proteinuria/MAU)</label> </td>
+                                                </tr>
+                                                <tr id="EKG_data">
+                                                    <td><label class="col-md-12 text-left">EKG</label></td>
+                                                </tr>
+                                                <tr id="Echo_data">
+                                                    <td><label class="col-md-12 text-left">Echo : If LVH   in EKG</label></td>
+                                                </tr>
+                                                <tr id="CAC_data">
+                                                    <td><label class="col-md-12 text-left">Coronary calcium scoring (CACs)</label></td>
+                                                </tr>
+                                                <tr id="ABI_data">
+                                                    <td><label class="col-md-12 text-left">ABI/CAVI</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class="col-md-12 text-left">ประเมิน HT retinopathy</label> </td>
+                                                </tr>
+                                        </tbody>
+                                        </table>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>     
+        </div>
+        <footer class="footer text-center">
+            All Rights Reserved by BPK. Designed and Developed by <a href="">BPK</a>.
+        </footer>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="SumFluVaccineModal" tabindex="-1" role="dialog" aria-labelledby="SumFluVaccineModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="SumFluVaccineModalLabel">Influenza (Flu) Vaccine Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="SumFluVaccineDetail" >
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+     <!-- Modal -->
+     <div class="modal fade" id="SumPneuVaccineModal" tabindex="-1" role="dialog" aria-labelledby="SumPneuVaccineModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="SumPneuVaccineModalLabel">Pneumococcal Vaccine Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="SumPneuVaccineDetail" >
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal เบาหวาน -->
+    <div class="modal fade" id="FBSModal" tabindex="-1" role="dialog" aria-labelledby="FBSModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="FBSModalLabel">ประเมินเบาหวาน (FBS, HbA1C)</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="FBSDetail" >
+                <div class="modal-body">
+                    <div id="countFBS"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>FBS</strong></td>
+                                <td width='5%' align="center" ><strong>HbA1C</strong></td>                                               
+                            </tr>
+                        </thead>
+                        <tbody id="countFBSDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <!-- Modal ประเมินระดับ Lipid Profile -->
+    <div class="modal fade" id="LipidModal" tabindex="-1" role="dialog" aria-labelledby="LipidModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="LipidModalLabel">ประเมินระดับ Lipid Profile(Lipid,LDL)</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="LipidDetail" >
+                <div class="modal-body">
+                    <div id="countLipid"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>Lipid</strong></td>
+                                <td width='5%' align="center" ><strong>LDL</strong></td>                                               
+                            </tr>
+                        </thead>
+                        <tbody id="countLipidDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal ประเมินการทำงานของไต (Cr, GFR) -->
+    <div class="modal fade" id="CrModal" tabindex="-1" role="dialog" aria-labelledby="CrModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="CrModalLabel">ประเมินการทำงานของไต (Cr, GFR)</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="CrDetail" >
+                <div class="modal-body">
+                    <div id="countCr"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>Cr</strong></td>
+                                <td width='5%' align="center" ><strong>GFR</strong></td>                                               
+                            </tr>
+                        </thead>
+                        <tbody id="countCrDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal ประเมินการทำงานของไต (Proteinuria/MAU) -->
+     <div class="modal fade" id="ProteinuriaModal" tabindex="-1" role="dialog" aria-labelledby="ProteinuriaModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="ProteinuriaModalLabel">ประเมินการทำงานของไต (Proteinuria/MAU)</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="ProteinuriaDetail" >
+                <div class="modal-body">
+                    <div id="countProteinuria"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>Proteinuria</strong></td>                                               
+                            </tr>
+                        </thead>
+                        <tbody id="countProteinuriaDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal EKG -->
+    <div class="modal fade" id="EKGModal" tabindex="-1" role="dialog" aria-labelledby="EKGModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="EKGModalLabel">EKG</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="EKGDetail" >
+                <div class="modal-body">
+                    <div id="countEKG"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>EKG</strong></td>                                               
+                            </tr>
+                        </thead>
+                        <tbody id="countEKGDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal Echo : If LVH in EKG-->
+    <div class="modal fade" id="EchoModal" tabindex="-1" role="dialog" aria-labelledby="EchoModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="EchoModalLabel">Echo : If LVH in EKG</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="EchoDetail" >
+                <div class="modal-body">
+                    <div id="countEcho"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>Eecho</strong></td>                                               
+                            </tr>
+                        </thead>
+                        <tbody id="countEchoDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal Coronary calcium scoring (CACs)-->
+    <div class="modal fade" id="CACsModal" tabindex="-1" role="dialog" aria-labelledby="CACsModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="CACsModalLabel">Coronary calcium scoring (CACs)</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="CACsDetail" >
+                <div class="modal-body">
+                    <div id="countCACs"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>CACs</strong></td>                                               
+                            </tr>
+                        </thead>
+                        <tbody id="countCACsDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal ABI/CAVI-->
+    <div class="modal fade" id="ABIModal" tabindex="-1" role="dialog" aria-labelledby="ABIModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="ABIModalLabel">ABI/CAVI</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="ABIDetail" >
+                <div class="modal-body">
+                    <div id="countABI"></div>
+                    <table id="zero_config" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td width='5%' align="center" ><strong>Date</strong></td>
+                                <td width='5%' align="center" ><strong>ABI</strong></td>      
+                                <td width='5%' align="center" ><strong>CAVI</strong></td>                                            
+                            </tr>
+                        </thead>
+                        <tbody id="countABIDetail">
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="detailBPModal" tabindex="-1" role="dialog" aria-labelledby="detailBPModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="detailBPModalLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" >
+                <div id="countBP"></div>
+                <table id="zero_config" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td width='5%' align="center" ><strong>Date</strong></td>
+                            <td width='5%' align="center" ><strong>Blood Pressure</strong></td>                                             
+                        </tr>
+                    </thead>
+                    <tbody id="BPDetail">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="detailMFModal" tabindex="-1" role="dialog" aria-labelledby="detailMFModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="detailMFModalLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" >
+                <div id="countMF"></div>
+                <table id="zero_config" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td width='5%' align="center" ><strong>Date</strong></td>
+                            <td width='5%' align="center" ><strong>Medication frequency (%)</strong></td>                                             
+                        </tr>
+                    </thead>
+                    <tbody id="MFDetail">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal  Appointment-->
+    <div class="modal fade" id="SumAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="SumAppointmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="SumAppointmentModalLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div id="countAppointment"></div>
+                <table id="zero_config" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td width='5%' align="center" ><strong>Date</strong></td>
+                            <td width='5%' align="center" ><strong>Appointment Status</strong></td>                                             
+                        </tr>
+                    </thead>
+                    <tbody id="SumAppointmentDetail">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="sumLoadModal" tabindex="-1" role="dialog" aria-labelledby="sumLoadModalLabel" aria-hidden="true ">
+        <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">  
+            <span class="fa fa-spinner fa-pulse fa-3x fa-fw"></span>
+        </div>
+    </div>
+
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="dist/js/custom.min.js"></script>
+    <script src="assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- This Page JS -->
+    <script src="assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+    <script src="dist/js/pages/mask/mask.init.js"></script>
+    <script src="assets/libs/select2/dist/js/select2.full.min.js"></script>
+    <script src="assets/libs/select2/dist/js/select2.min.js"></script>
+    <script src="assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
+    <script src="assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
+    <script src="assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
+    <script src="assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
+    <script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="assets/libs/quill/dist/quill.min.js"></script>
+    <script>
+        document.getElementById("empID").innerHTML = ""+sessionStorage.userID+""
+         // INFO Type
+         $('#ts-info').on('click', function() {
+            toastr.info(' Name : '+sessionStorage.patient_name+' <br> Hn : '+sessionStorage.hncode+'','กำลังแสดงข้อมูลสรุปประจำปี');
+        })
+
+        $( document ).ready(function() {
+            console.log( "ready!" );
+            if(sessionStorage.userID != null){
+                if (sessionStorage.hncode != null) {
+                    getSumVisit(sessionStorage.hncode);
+                }else{
+                    document.getElementById("zero_config").innerHTML = "";
+                    document.getElementById("zero_config").innerHTML = "<h3 align='Center'>ไม่มีการบันทึกข้อมูล</h3>"
+                }
+            }else{
+                window.location = "login.html";
+            }
+        });
+
+        function logout(){
+            localStorage.clear();
+            sessionStorage.clear();
+        }
+    </script>
+</body>
+</html>

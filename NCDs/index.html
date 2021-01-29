@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    
+    <title>NCDs</title>
+    <!-- Custom CSS -->
+    <link href="assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/libs/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/libs/jquery-minicolors/jquery.minicolors.css">
+    <link rel="stylesheet" type="text/css" href="assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/libs/quill/dist/quill.snow.css">
+    <link href="dist/css/style.min.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        var str = String(window.location);
+        // var res = str.split('?');
+        switch (navigator.appName) {
+            case 'Microsoft Internet Explorer':
+                if (window.name != 'prime') {
+                    window.name = 'prime';
+                   // window.open(window.location.href, 'prime')
+                    alert(str);
+                    StartThis('chrome.exe "' + str + '"');
+                    window.close();
+                }
+                break;
+            default:
+        }
+        
+        function StartThis(CommandToRun) {
+        var shellObject = new ActiveXObject("wscript.Shell");
+        shellObject.run(CommandToRun)
+        }
+    </script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script src="script/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="script/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="script/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="script/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<link rel="stylesheet" href="script/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+<script src="script/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+<script src="script/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script src="js/index.js"></script>
+<script src="js/login.js"></script>
+
+</head>
+<style>
+    * {box-sizing: border-box;}
+    
+    .container {
+      position: relative;
+      width: 50%;
+      max-width: 300px;
+    }
+    
+    .image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    #tag_image {
+        position: relative;
+        width: 50%;
+        max-width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 200px;
+    }
+
+    img:hover {
+        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+    }
+
+</style>
+
+<body>
+
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+  
+    <div id="main-wrapper" class="mini-sidebar">
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header"  data-logobg="skin5">
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                  
+                    <a class="navbar-brand" href="index.html">
+                        <b class="logo-icon" >
+                       
+                            <i  class="mdi-48px mdi mdi-heart-pulse"></i>
+                        </b>
+            
+                        <span class="light-logo" >
+                             <h3>NCDs</h3> 
+
+                        </span>      
+                    </a>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
+                </div>
+              
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                    <ul class="navbar-nav float-left mr-auto">
+                        <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
+                        <li class="nav-item"><a class="nav-link dropdown-toggle" href="index.html"><span class="d-none d-md-block" > ข้อมูลส่วนตัว</span></a></li>
+                        <li class="nav-item"><a class="nav-link dropdown-toggle" href="hypertension-visit.html"><span class="d-none d-md-block" > ข้อมูลการตรวจตามวันนัด</span></a></li>
+                        <li class="nav-item"><a class="nav-link dropdown-toggle" href="summaryVisit.html"><span class="d-none d-md-block" > สรุปประจำปี</span></a></li> 
+                    </ul>
+                    <ul class="navbar-nav float-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><img id="img_user" src="assets/images/users/1.png" alt="user"
+                                    width="35"></a>
+                            <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                                <a class="dropdown-item"><i class="ti-user m-r-5 m-l-5"></i> <span id="empID"></span> </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="login.html"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar" data-sidebarbg="skin5">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav" class="p-t-30">
+                      
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="index.html" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Forms</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="patient_list.html" aria-expanded="false"><i class="mdi mdi-account-outline"></i><span class="hide-menu">Patient List</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="hypertension_list.html" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">NCDs List</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="appointment.html" aria-expanded="false"><i class="mdi mdi-note-multiple"></i><span class="hide-menu">NCDs Appointment</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://192.168.24.36:90/Views/NCDsDashboard.aspx"  target="_blank" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">NCDs Dashboard</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://192.168.24.36:90/Views/NCDs.aspx"  target="_blank" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">NCDs Report</span></a></li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+      
+        <div class="page-wrapper">
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-12 d-flex no-block align-items-center">
+                        <h4 class="page-title">Personal Info</h4>  
+                        <div class="card-body text-right">
+                            <a class="btn btn-primary text-right"  href="#" onclick="print()">PRINT</a>
+                        <div class="ml-auto text-right">
+                            <nav aria-label="breadcrumb">
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="container-fluid">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- <h4 class="card-title">Personal Info 1</h4> -->
+                                    <div id="loader" style="display:none;"> </div>
+                                    <div class="form-group row">
+                                        <div class="container" id="tag_image">
+                                        </div>
+                                    </div>
+                                    <div class="border-top"> <br> </div>
+                                    <div class="form-group row">
+                                        <label for="lname" class="col-sm-2 text-center control-label col-form-label">HN</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="inputHN" placeholder="Enter HN Here">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <a class="mb-2 btn btn-success btn-block" id="myBtn" href="#" onclick="reload_patient()">LOAD</a>
+                                        </div>
+                                    </div>
+            
+                                    <div class="border-top"> <br> </div>
+            
+                                    <div class="form-group row">
+                                        <label for="fname" class="col-sm-3 text-right control-label col-form-label">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="txtpt_name" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 text-right control-label col-form-label">DOB</label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" id="txtpt_dob" disabled>
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group row">
+                                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Age</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="txtpt_age" disabled>
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 text-right control-label col-form-label">EN</label>
+                                        <div class="col-sm-9">
+                                            <input type="hidden" class="form-control" id="inputEn">
+                                            <select class="form-control" id="selectsetEn" value=""
+                                                onchange="selectOption(this.value)"></select>
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group row">
+                                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Visit</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="date" class="form-control" id="date-visit" value="" disabled>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--
+                                    <div class="form-group row">
+                                        <label for="txtpt_drname" class="col-sm-3 text-right control-label col-form-label">Doctor </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="txtpt_drname">
+                                        </div>
+                                    </div>
+                                -->
+
+                                </div>
+                                <div class="border-top">
+                                    <div class="card-body text-right">
+                                        <button type="button" class="btn btn-primary" data-toggle='modal'
+                                            data-target='#confirm_patientModal' id="butregister">Register</button>
+                                        <button type="button" class="btn btn-primary" data-toggle='modal'
+                                            data-target='#confirm_patientModal' id="butretrieve">Retrieve</button>
+                                        <!-- <button type="button" class="btn btn-primary" onclick="addNewVisit()">SUBMIT</button> -->
+                                        <!-- <button type="button" onclick="submit_patient()" class="btn btn-primary">Submit</button> -->
+                                        <!-- <button type="reset" class="btn btn-primary">Reset</button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <form class="form-horizontal">
+                            <div class="card">
+                            <!-- personnal info 2  -->
+                                <div id="example"class="card-body"> 
+                                <!-- <h4 class="card-title">Personal Info 2</h4> -->
+                                    <div class="form-group row">
+                                        <label for="perFcv" class="col-sm-3 text-right control-label col-form-label">First clinic visit (Date)</label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <input type="date" class="form-control" id="date_first_visit" value="" placeholder="mm/dd/yyyy" disabled>
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- radio Baseline Condition -->
+                                <!--
+                                    <div class="border-top"> <br>
+                                        <div class="form-group row ">
+                                            <label  class="col-md-3 text-right  control-label col-form-label">Baseline Condition</label>
+                                            <div class="col-sm-9">
+                                                <div class="form-group row ">
+                                                    <div class="input-group ">  
+                                                        <label class="col-sm-3 text-left control-label col-form-label" for=""> Hypertension since Yr </label> 
+                                                        <div class="input-group-append">
+                                                            <input type="text"  maxlength="4" class="col-sm-9 form-control " id="bl_hypertension_year" placeholder="A.D." >   
+                                                        </div>
+                                                        <div class=" col-form-label ">
+                                                            <div class="custom-control custom-checkbox mr-sm-2  ">
+                                                                <input type="checkbox" class="custom-control-input  col-form-label " id="bl_unknow" value="false" onchange="this.value=this.checked? true : false" >
+                                                                <label class="custom-control-label "  for="bl_unknow">Unknown</label>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    -->
+                                        <!-- checkbox CV risk -->
+                                        <!--
+                                        <div class="form-group row" id="Baseline">
+                                            <label class="col-md-3 text-right"></label>
+                                            <div class="col-md-9" id="Baselinedisease">
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_dm();" id="cv_dm"  value="false"  onchange="this.value=this.checked? true : false" >
+                                                    <label class="custom-control-label" for="cv_dm">DM</label>
+                                                    <div style="display:none;" id="DMalldihe">
+                                                    <div class="form-group row ">
+                                                        <div class="input-group ">  
+                                                            <div class=" col-form-label ">
+                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <input type="checkbox" class="custom-control-input" onClick="true_DM2();" id="cv_DM2" value="false" onchange="this.value=this.checked? true : false">
+                                                                    <label class="custom-control-label" for="cv_DM2">DM Type1Yr</label>
+                                                                </div>  
+                                                            </div> 
+                                                            <div class="input-group-append">
+                                                                <input type="text"  maxlength="1" class="col-sm-9 form-control " id="DMYR2" placeholder="เป็นมากี่ปี" >   
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row ">
+                                                        <div class="input-group ">  
+                                                            <div class=" col-form-label ">
+                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <input type="checkbox" class="custom-control-input" onClick="true_DM3();" id="cv_DM3" value="false" onchange="this.value=this.checked? true : false">
+                                                                    <label class="custom-control-label" for="cv_DM3">DM Type2Yr</label>
+                                                                </div>  
+                                                            </div> 
+                                                            <div class="input-group-append">
+                                                                <input type="text"  maxlength="1" class="col-sm-9 form-control " id="DMYR3" placeholder="เป็นมากี่ปี" >   
+                                                            </div>
+                                                        </div>
+                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                            <input type="checkbox" class="custom-control-input" onClick="true_DM4();" id="cv_DM4" value="false" onchange="this.value=this.checked? true : false">
+                                                            <label class="custom-control-label" style="display:none;" id = "DMhide4" for="cv_DM4">On Medicine</label>  
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                                <input type="checkbox" class="custom-control-input" onClick="true_DM5();" id="cv_DM5" value="false" onchange="this.value=this.checked? true : false">
+                                                                <label class="custom-control-label" style="display:none;" id="DMhide5" for="cv_DM5">Insulin</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                                <input type="checkbox" class="custom-control-input" onClick="true_DM6();" id="cv_DM6" value="false" onchange="this.value=this.checked? true : false">
+                                                                <label class="custom-control-label" style="display:none;" id="DMhide6" for="cv_DM6">Deny Treatment</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control" id="Doctor_dm" value=""></select>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_copd();" id="od_copd" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="od_copd">COPD/Asthma</label>
+                                                    <div style="display:none;" id="copdhide">
+                                                    <div class="form-group row ">
+                                                        <div class="input-group ">  
+                                                            <div class=" col-form-label ">
+                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <label for="cv_copd2">COPD/Asthma Yr</label>
+                                                                </div>  
+                                                            </div> 
+                                                            <div class="input-group-append">
+                                                                <input type="text"  maxlength="1" class="col-sm-9 form-control " id="copdYR" placeholder="เป็นมากี่ปี" >   
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control" id="Doctor_copd" value=""></select>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_dlp();" id="cv_dlp" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="cv_dlp">DLP</label>
+                                                    <div style="display:none;" id="dlpHide">
+                                                    <div class="form-group row ">
+                                                        <div class="input-group ">  
+                                                            <div class=" col-form-label">
+                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <label for="cv_dlp2">Dyslipidemia Yr</label>
+                                                                </div>  
+                                                            </div> 
+                                                            <div class="input-group-append">
+                                                            <input type="text"  maxlength="1" class="col-sm-9 form-control " id="dlptext" placeholder="เป็นมากี่ปี">
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control"  id="Doctor_dlp" value=""></select>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_smoking();" id="cv_smoking" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="cv_smoking">Smoking </label>
+                                                    <div class="col-sm-9" style="display:none;" id="smokingHide">
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <label for="cv_smoking2">Smoking Yr</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                    <input tzype="text"  maxlength="1" class="col-sm-9 form-control " id="smokingYR" placeholder="สูบมากี่ปี" >   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <input type="checkbox" class="custom-control-input" onClick="true_smoking4();" id="cv_smoking4" value="false" onchange="this.value=this.checked? true : false">
+                                                                    <label class="custom-control-label" id = "smoking4hide" for="cv_smoking4">คิดจะเลิก</label>  
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" onClick="true_smoking5();" id="cv_smoking5" value="false" onchange="this.value=this.checked? true : false">
+                                                                        <label class="custom-control-label" id="smoking5hide" for="cv_smoking5">ไม่ต้องการจะเลิก</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" onClick="true_smoking3();" id="cv_smoking3" value="false" onchange="this.value=this.checked? true : false">
+                                                                        <label class="custom-control-label" for="cv_smoking3">เลิกแล้ว</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                <input type="text"  maxlength="1" class="col-sm-9 form-control " id="smokingLYR" placeholder="เลิกสูบมากี่ปี">
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <input type="checkbox" class="custom-control-input" onClick="true_smoking6();" id="cv_smoking6" value="false" onchange="this.value=this.checked? true : false">
+                                                                    <label class="custom-control-label" for="cv_smoking6">กลับไปสูบต่อ</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                    <input type="text"  maxlength="1" class="col-sm-9 form-control " id="smokingKYR"  placeholder="กลับไปสูบต่อกี่ปี">
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control"  id="Doctor_smoking" value=""></select>
+                                                    </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_alcohol();" id="cv_alcohol" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="cv_alcohol">Alcohol</label>
+                                                    <div class="col-sm-9" style="display:none;" id="alcoholHide">
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <label for="cv_alcohol2">AlcoholYr</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                    <input type="text"  maxlength="1" class="col-sm-9 form-control " id="alcoholYR" placeholder="ดื่มมากี่ปี" >   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <input type="checkbox" class="custom-control-input" onClick="true_alcohol4();" id="cv_alcohol4" value="false" onchange="this.value=this.checked? true : false">
+                                                                    <label class="custom-control-label" id = "alcohol4hide" for="cv_alcohol4">คิดจะเลิก</label>  
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" onClick="true_alcohol5();" id="cv_alcohol5" value="false" onchange="this.value=this.checked? true : false">
+                                                                        <label class="custom-control-label" id="alcohol5hide" for="cv_alcohol5">ไม่ต้องการจะเลิก</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" onClick="true_alcohol3();" id="cv_alcohol3" value="false" onchange="this.value=this.checked? true : false">
+                                                                        <label class="custom-control-label" for="cv_alcohol3">เลิกแล้ว</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                <input type="text"  maxlength="1" class="col-sm-9 form-control " id="alcoholLYR" placeholder="เลิกดื่มมากี่ปี">
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <input type="checkbox" class="custom-control-input" onClick="true_alcohol6();" id="cv_alcohol6" value="false" onchange="this.value=this.checked? true : false">
+                                                                    <label class="custom-control-label" for="cv_alcohol6">กลับไปดื่มต่อ</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                    <input type="text"  maxlength="1" class="col-sm-9 form-control " id="alcoholKYR"  placeholder="กลับไปดื่มต่อกี่ปี">
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control"  id="Doctor_alcohol" value=""></select>
+                                                    </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_Obesity();" id="cv_Obesity" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="cv_Obesity">Obesity</label>
+                                                    <div class="col-sm-9" style="display:none;" id="ObesityHide">
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <input type="checkbox" class="custom-control-input" onClick="true_Obesity2();" id="cv_Obesity2" value="false" onchange="this.value=this.checked? true : false">
+                                                                    <label class="custom-control-label" id = "Obesityhide2" for="cv_Obesity2">BMI 30-34.9</label>  
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" onClick="true_Obesity3();" id="cv_Obesity3" value="false" onchange="this.value=this.checked? true : false">
+                                                                        <label class="custom-control-label" id="Obesityhide3" for="cv_Obesity3">BMI 35-40</label>
+                                                                    </div>
+                                                                    </div>
+                                                                    <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" onClick="true_Obesity4();" id="cv_Obesity4" value="false" onchange="this.value=this.checked? true : false">
+                                                                        <label class="custom-control-label"  id="Obiesityhide4" for="cv_Obesity4">BMI > 40</label>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control"  id="Doctor_Obesity" value=""></select>
+                                                    </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_cda();" id="cv_cda" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="cv_cda">Premature family history of CAD </label>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control" style="display:none;" id="Doctor_cda" value=""></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    -->
+                                        <!-- checkbox Other Disease -->
+                                        <!---
+                                        <div class="border-top"> <br>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 text-right">CVD  Disease</label>
+                                                <div class="col-md-9" id="cvddisease">
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="oc_cad();" id="cv_cad" value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="cv_cad">Coronary artery disease(CAD)</label>
+                                                        <div class="col-sm-9" style="display:none;" id="cadallhide">
+                                                            <div class="form-group row ">
+                                                                <div class="input-group ">  
+                                                                    <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <label for="cv_cadtext">Coronary artery disease(CAD) Yr</label>
+                                                                        </div>  
+                                                                    </div> 
+                                                                    <div class="input-group-append">
+                                                                        <input type="text"  maxlength="1" class="col-sm-9 form-control " id="cadYR"  placeholder="เป็นมากี่ปี">
+                                                                    </div>
+                                                                </div>
+                                                            </div> 
+                                                            <div class="form-group row ">
+                                                                <div class="input-group ">  
+                                                                    <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" onClick="true_cad2();" id="cv_cad2" value="false" onchange="this.value=this.checked? true : false">
+                                                                        <label class="custom-control-label" id = "cadhide2" for="cv_cad2">On Medication</label>  
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="input-group-append">
+                                                                        <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                            <input type="checkbox" class="custom-control-input" onClick="true_cad3();" id="cv_cad3" value="false" onchange="this.value=this.checked? true : false">
+                                                                            <label class="custom-control-label" id="cadhide3" for="cv_cad3">Post PCI</label>
+                                                                        </div>
+                                                                        </div>
+                                                                        <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                            <input type="checkbox" class="custom-control-input" onClick="true_cad4();" id="cv_cad4" value="false" onchange="this.value=this.checked? true : false">
+                                                                            <label class="custom-control-label"  id="cadhide4" for="cv_cad4">Post CABG</label>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                            <select class="form-control"  id="Doctor_cad" value=""></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="oc_Stroke();" id="cv_Stroke" value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="cv_Stroke">Stroke</label>
+                                                        <div class="col-sm-9" style="display:none;" id="StrokeHide">
+                                                            <div class="form-group row ">
+                                                                <div class="input-group ">  
+                                                                    <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                            <label for="cv_Stroke2">StrokeYr</label>
+                                                                        </div>  
+                                                                    </div> 
+                                                                    <div class="input-group-append">
+                                                                        <input type="text"  maxlength="2" class="col-sm-9 form-control " id="StrokeYR" placeholder="เป็นมากี่ปี" >   
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-9">
+                                                                            <input type="checkbox" class="custom-control-input" onClick="true_Stroke3();" id="cv_Stroke3" value="false" onchange="this.value=this.checked? true : false">
+                                                                            <label class="custom-control-label" id="Strokehide3" for="cv_Stroke3">Ischemic</label>  
+                                                                        </div>
+                                                                            <div class="col-sm-9">
+                                                                            <input type="checkbox" class="custom-control-input" onClick="true_Stroke4();" id="cv_Stroke4" value="false" onchange="this.value=this.checked? true : false">
+                                                                            <label class="custom-control-label" id="Strokehide4" for="cv_Stroke4">Hemorrhagic</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                            <select class="form-control"  id="Doctor_Stroke" value=""></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="oc_pad();" id="cv_pad" value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="cv_pad">Peripheral artery disease(PAD)</label>
+                                                        <div style="display:none;" id="padhide">
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <label for="cv_pad2">Peripheral artery disease(PAD) Yr</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                    <input type="text"  maxlength="2" class="col-sm-9 form-control " id="padYR" placeholder="เป็นมากี่ปี" >   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                            <select class="form-control" id="Doctor_pad" value=""></select>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="oc_ckd();" id="cv_ckd" value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="cv_ckd">Chronic kidney disease(CKD)</label>
+                                                        <div style="display:none;" id="ckdhide">
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <label for="cv_ckd2">Chronic kidney disease(CKD) stage</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <input type="text"  maxlength="2" class="col-sm-9 form-control " id="ckdYR" placeholder="อาการอยู่ในระยะ" >   
+                                                                </div>
+                                                            </div>
+                                                            <div class=" col-form-label ">
+                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <label for="cv_ckd2">Chronic kidney disease(CKD) Yr</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <input type="text"  maxlength="2" class="col-sm-9 form-control " id="ckdYR" placeholder="เป็นมากี่ปี" >   
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                            <select class="form-control" id="Doctor_ckd" value=""></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_chf();" id="cv_chf" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="cv_chf">Congestive heart failure(CHF)</label>
+                                                    <div style="display:none;" id="chfallhide">
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <label for="cv_chftext">Congestive heart failure(CHF) Yr</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                    <input type="text"  maxlength="1" class="col-sm-9 form-control " id="chfYR"  placeholder="เป็นมากี่ปี">
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                                <div class="col-md-9">
+                                                                <div class="form-group row ">
+                                                                    <div class="input-group ">  
+                                                                        <div class=" col-form-label ">
+                                                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                                            <label for="cv_chfclass">NYHA Functional Class</label>
+                                                                            </div>  
+                                                                        </div> 
+                                                                        <div class="input-group-append">
+                                                                            <input type="text"  maxlength="1" class="col-sm-9 form-control " id="chfclass"  placeholder="ระดับ">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                    <div class="form-group row ">
+                                                                        <div class="input-group ">  
+                                                                            <div class=" col-form-label">
+                                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                                    <label for="cv_chf5">Cause of HF</label>
+                                                                                </div>  
+                                                                            </div> 
+                                                                            <div class="input-group-append">
+                                                                                <textarea  class="form-control " id="sc_other" placeholder="ระบุ"></textarea> 
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row ">
+                                                                        <div class="input-group ">  
+                                                                            <div class=" col-form-label ">
+                                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                                <input type="checkbox" class="custom-control-input" onClick="true_chf2();" id="cv_chf2" value="false" onchange="this.value=this.checked? true : false">
+                                                                                <label class="custom-control-label" id = "chfhide2" for="cv_chf2">HFr EF< 40% </label>  
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="input-group-append">
+                                                                                <div class=" col-form-label ">
+                                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                                    <input type="checkbox" class="custom-control-input" onClick="true_chf3();" id="cv_chf3" value="false" onchange="this.value=this.checked? true : false">
+                                                                                    <label class="custom-control-label" id="chfhide3" for="cv_chf3">HFmr 40-49EF< 40%</label>
+                                                                                </div>
+                                                                                </div>
+                                                                                <div class=" col-form-label ">
+                                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                                    <input type="checkbox" class="custom-control-input" onClick="true_chf4();" id="cv_chf4" value="false" onchange="this.value=this.checked? true : false">
+                                                                                    <label class="custom-control-label"  id="chfhide4" for="cv_chf4">HFp >50% EF< 40%</label>
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control"  id="Doctor_chf" value=""></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    -->
+                                        <!-- checkbox Secondary cause -->
+                                    
+                                        <div class="border-top" id = "fristlabel">
+
+                                        </div>
+                                        
+                                        <style>
+                                            .disease {
+                                            text-indent: 4px;
+                                            }
+                                        </style>
+                                        <!--
+                                            <div class="form-group row">
+                                                <label class="col-md-3 text-right">Other Disease</label>
+                                                <div class="col-md-9">
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="oc_gout();" id="od_gout" value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="od_gout">Gout </label>
+                                                        <div style="display:none;" id="gouthide">
+                                                            <div class="form-group row ">
+                                                                <div class="input-group ">  
+                                                                    <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                            <label for="cv_gout2">Gout Yr</label>
+                                                                        </div>  
+                                                                    </div> 
+                                                                    <div class="input-group-append">
+                                                                        <input type="text"  maxlength="2" class="col-sm-9 form-control " id="goutYR" placeholder="เป็นมากี่ปี" >   
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                            <select class="form-control" id="Doctor_gout" value=""></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="oc_af();" id="od_af" value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="od_af">Atrial fibrillation(AF)</label>
+                                                        <div style="display:none;" id="afhide">
+                                                            <div class="form-group row ">
+                                                                <div class="input-group ">  
+                                                                    <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                            <label for="cv_af2">Atrial fibrillation(AF) Yr</label>
+                                                                        </div>  
+                                                                    </div> 
+                                                                    <div class="input-group-append">
+                                                                        <input type="text"  maxlength="2" class="col-sm-9 form-control " id="afYR" placeholder="เป็นมากี่ปี" >   
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                            <select class="form-control" id="Doctor_af" value=""></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="oc_osa();" id="sc_osa" value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="sc_osa">Obstructive sleep apnea (OSA)</label>
+                                                        <div style="display:none;" id="osahide">
+                                                            <div class="form-group row ">
+                                                                <div class="input-group ">  
+                                                                    <div class=" col-form-label ">
+                                                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                                                            <label for="cv_osa2">Obstructive sleep apnea (OSA) Yr</label>
+                                                                        </div>  
+                                                                    </div> 
+                                                                    <div class="input-group-append">
+                                                                        <input type="text"  maxlength="2" class="col-sm-9 form-control " id="osaYR" placeholder="เป็นมากี่ปี" >   
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <div class="col-sm-9">
+                                                            <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                            <select class="form-control" id="Doctor_osa" value="" ></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                    <input type="checkbox" class="custom-control-input" onClick="oc_Hyperthyroid();" id="sc_Hyperthyroid" value="false" onchange="this.value=this.checked? true : false">
+                                                    <label class="custom-control-label" for="sc_Hyperthyroid">Hyperthyroid</label>
+                                                    <div style="display:none;" id="Hyperthyroidhide">
+                                                        <div class="form-group row ">
+                                                            <div class="input-group ">  
+                                                                <div class=" col-form-label ">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <label for="cv_Hyperthyroid2">Hyperthyroid Yr</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="input-group-append">
+                                                                    <input type="text"  maxlength="2" class="col-sm-9 form-control " id="HyperthyroidYR" placeholder="เป็นมากี่ปี" >   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                        <select class="form-control" id="Doctor_Hyperthyroid" value="" ></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" onClick="oc_Hypothyroid();" id="sc_Hypothyroid" value="false" onchange="this.value=this.checked? true : false">
+                                                <label class="custom-control-label" for="sc_Hypothyroid">Hypothyroid</label>
+                                                <div style="display:none;" id="Hypothyroidhide">
+                                                    <div class="form-group row ">
+                                                        <div class="input-group ">  
+                                                            <div class=" col-form-label ">
+                                                                <div class="custom-control custom-checkbox mr-sm-2">
+                                                                    <label for="cv_Hypothyroid2">Hypothyroid Yr</label>
+                                                                </div>  
+                                                            </div> 
+                                                            <div class="input-group-append">
+                                                                <input type="text"  maxlength="2" class="col-sm-9 form-control " id="HypothyroidYR" placeholder="เป็นมากี่ปี" >   
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden" class="form-control" id="inputdoctorcase">
+                                                    <select class="form-control" id="Doctor_Hypothyroid" value="" ></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" onClick="ck_Other();" id="checkboxOther"  value="false" onchange="this.value=this.checked? true : false">
+                                                        <label class="custom-control-label" for="checkboxOther">Other</label>
+                                                        <textarea  class="form-control " style="display:none;" id="ck_other" placeholder="ระบุ"></textarea> 
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    -->
+                                        <div class="border-top"> <br>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 text-right control-label col-form-label">CV Risk in 10 years with Lab</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-2">
+                                                        <label class="text-left control-label col-form-label" >Date </label>
+                                                    </div>
+                                                        <input type="date" class="col-sm-4 form-control" id="cvrisk_date"  value="" >     
+                                                    </div>
+                                                </div>
+                                             </div>                   
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" id="cvrisk_percent" value="">
+                                                        </div>
+                                                        <label class="col-sm-3 text-left control-label col-form-label" >%</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control col-sm-12 " id="cvrisk_multiply" value="">
+                                                        </div>
+                                                        <label class="col-sm-9 text-left control-label col-form-label" >เท่าของคนไทยเพศเดียวกัน อายุเท่ากัน และปราศจากปัจจัยเสี่ยง</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <a href="https://med.mahidol.ac.th/cardio_vascular_risk/thai_cv_risk_score/"  target="_blank">Thai CV risk
+                                                                 <img alt="Thai CV risk" src="assets/images/thaicv.png"></a>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <a href="http://tools.acc.org/ASCVD-Risk-Estimator-Plus/#!/calculate/estimate/"  target="_blank">ASCVD risk
+                                                                 <img alt="ASCVD risk" src="assets/images/ascvd.png"></a>
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <a href="https://www.escardio.org/static-file/Escardio/Subspecialty/EACPR/Documents/score-charts.pdf"  target="_blank">The ESC CVD Risk/SCORE Charts
+                                                                 <img alt="The ESC CVD Risk/SCORE Charts" src="assets/images/esccvd.png"></a>
+                                                </div>
+                                            </div>
+                                            
+                                        </div> 
+                                    </div>
+                                    <div class="border-top"> <br>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-8">
+                                                    <div class="table-responsive ">
+                                                        <div id="loading-cvrisk">
+                                                        <!-- <h3 align='Center'>ไม่พบข้อมูล</h3> -->
+                                                    </div>
+                                                    </div>
+                                                    <table id="zero_config" class="table table-striped table-bordered">
+                                                        <thead>
+                                                            <tr id="colum_cvriskname"></tr>
+                                                        </thead>
+                                                        <tbody>  
+                                                            <tr id="display_cvrisk0"></tr>
+                                                            <tr id="display_cvrisk1"> </tr>
+                                                            <tr id="display_cvrisk2"> </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                             
+                                </div>
+                            </div>
+                            </form>
+                        <div class="border-top"> 
+                        <div>
+                            <div class="card-body text-right" id="">
+                                <button type='button' class='btn btn-success' onclick='addcvrisk_Patient()'>ADD CVRISK</button>  <span  id="BaseCheck" ></span>
+                            </div>
+                            <!-- <button type="reset" class="btn btn-danger">Reset</button>-->
+                            <!--
+                        </div>
+                    </div>
+                    </div>
+                </form>      
+            </div>
+        </div>
+    </div>
+                <!-- <button type="button" class="btn btn-success" onclick="getCv_Risk()">test</button> -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="confirm_editModal" tabindex="-1" role="dialog" aria-labelledby="confirm_editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirm_editModalLabel">ยืนยันการแก้ไข</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          กรุณากดยืนยันเพื่อบันทึกการเปลี่ยนแปลง..
+        </div>
+        <div class="modal-footer">
+            
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" onclick='UpdateBaseInfo()'>Save changes</button>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+ <!-- Modal -->
+ <div class="modal fade" id="confirm_patientModal" tabindex="-1" role="dialog" aria-labelledby="confirm_patientModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirm_patientModalLabel">บันทึกข้อมูล</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            คุณต้องการบันทึกข้อมูลการตรวจของคนไข้หรือไม่
+        </div>
+        <div class="modal-footer">
+            
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success" onclick="allgetData()">Save</button>
+            
+        </div>
+      </div>
+    </div>
+</div>
+
+
+ <!-- Modal Alert -->
+
+<div class="modal fade" id="alert_nDataModal" tabindex="-1" role="dialog" aria-labelledby="alert_nDataModalLabel" aria-hidden="true">
+    
+
+            <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">  
+                <span class="fa fa-spinner fa-pulse fa-3x fa-fw"></span>
+            </div>
+            
+</div>
+
+<div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true ">
+    <div class="modal-dialog " role="document ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ระบบกำลังบันทึกข้อมูลการตรวจของคนไข้</h5>
+            </div>
+            <div class="modal-body">
+
+                <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">  
+                    <span class="fa fa-spinner fa-pulse fa-3x fa-fw"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+                 
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="dist/js/custom.min.js"></script>
+    <script src="assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- This Page JS -->
+    <script src="assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+    <script src="dist/js/pages/mask/mask.init.js"></script>
+    <script src="assets/libs/select2/dist/js/select2.full.min.js"></script>
+    <script src="assets/libs/select2/dist/js/select2.min.js"></script>
+    <script src="assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
+    <script src="assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
+    <script src="assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
+    <script src="assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
+    <script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="assets/libs/quill/dist/quill.min.js"></script>
+
+<!-- ShowText Input -->
+    <script>
+        //แสดง ID ที่เข้าสู่ระบบ profile
+        document.getElementById("empID").innerHTML = ""+sessionStorage.userID+""  
+
+        function hiddenn(a) {
+      
+            if(a==0){
+        
+                document.getElementById("").style.display = 'none';
+        
+            }else{
+            
+                document.getElementById("").style.display = '';
+            
+            }
+        
+        }
+        function oc_resistant(){
+            var oc = document.getElementById('bl_resistant_hypertension')
+            if(oc.checked == true){
+            
+                document.getElementById('resistantHide').style.display = "";
+                doctorRH()
+                
+            }else{
+            
+                document.getElementById('resistantHide').style.display = "none";
+                document.getElementById("Doctor_resistant").innerHTML = ""; 
+                $( "#bl_resistant_hypertension3" ).prop( "checked", false )
+            }
+        }
+        function oc_dm(){
+            var oc = document.getElementById('cv_dm')
+
+            if(oc.checked == true){
+            
+                document.getElementById('DMalldihe').style.display = "";
+                doctorDM()
+                
+            }else{
+            
+                document.getElementById('DMalldihe').style.display = "none";
+                document.getElementById("Doctor_dm").innerHTML = ""; 
+                $( "#cv_DM2" ).prop( "checked", false )
+                $( "#cv_DM3" ).prop( "checked", false )
+                $( "#cv_DM4" ).prop( "checked", false )
+                $( "#cv_DM5" ).prop( "checked", false )
+                $( "#cv_DM6" ).prop( "checked", false )
+            }
+        }
+        function true_DM2(){
+            $( "#cv_DM3" ).prop( "checked", false )
+            $( "#cv_DM4" ).prop( "checked", false )
+            $( "#cv_DM5" ).prop( "checked", false )
+            $( "#cv_DM6" ).prop( "checked", false )
+            DMhide()
+        }
+        function true_DM3(){
+            DMhide()
+            $( "#cv_DM2" ).prop( "checked", false )
+        }
+        function DMhide(){
+            var oc = document.getElementById('cv_DM3')
+            if(oc.checked == true){
+            document.getElementById('DMhide4').style.display = "";
+            document.getElementById('DMhide5').style.display = "";
+            document.getElementById('DMhide6').style.display = "";
+            }else{
+            document.getElementById('DMhide4').style.display = "none";
+            document.getElementById('DMhide5').style.display = "none";
+            document.getElementById('DMhide6').style.display = "none";
+            }
+        }
+        function oc_dlp(){
+            var oc = document.getElementById('cv_dlp')
+
+            if(oc.checked == true){
+            
+                document.getElementById('dlpHide').style.display = "";
+                doctorDLP()
+                
+            }else{
+            
+                document.getElementById('dlpHide').style.display = "none";
+                document.getElementById("Doctor_dlp").innerHTML = ""; 
+            }
+        }
+        function oc_smoking(){
+            var oc = document.getElementById('cv_smoking')
+            if(oc.checked == true){
+            
+                document.getElementById('smokingHide').style.display = "";
+                doctorSMOKING()
+            }else{
+                document.getElementById('smokingHide').style.display = "none";
+                document.getElementById("Doctor_smoking").innerHTML = ""; 
+                $( "#cv_smoking3" ).prop( "checked", false )
+                $( "#cv_smoking4" ).prop( "checked", false )
+                $( "#cv_smoking5" ).prop( "checked", false )
+                $( "#cv_smoking6" ).prop( "checked", false )
+            }
+        }
+        function true_smoking2(){
+            $( "#cv_smoking3" ).prop( "checked", false )
+            $( "#cv_smoking6" ).prop( "checked", false )
+        }
+        function true_smoking3(){
+            $( "#cv_smoking4" ).prop( "checked", false )
+            $( "#cv_smoking5" ).prop( "checked", false )
+            $( "#cv_smoking6" ).prop( "checked", false )
+        }
+        function true_smoking4(){
+            $( "#cv_smoking3" ).prop( "checked", false )
+            $( "#cv_smoking5" ).prop( "checked", false )
+            $( "#cv_smoking6" ).prop( "checked", false )
+        }
+        function true_smoking5(){
+            $( "#cv_smoking3" ).prop( "checked", false )
+            $( "#cv_smoking4" ).prop( "checked", false )
+            $( "#cv_smoking6" ).prop( "checked", false )
+        }
+        function true_smoking6(){
+            $( "#cv_smoking3" ).prop( "checked", false )
+            $( "#cv_smoking4" ).prop( "checked", false )
+            $( "#cv_smoking5" ).prop( "checked", false )
+        }
+        function oc_alcohol(){
+            var oc = document.getElementById('cv_alcohol')
+            if(oc.checked == true){
+            
+                document.getElementById('alcoholHide').style.display = "";
+                doctorAlcohol()
+            }else{
+                document.getElementById('alcoholHide').style.display = "none";
+                document.getElementById("Doctor_alcohol").innerHTML = ""; 
+                $( "#cv_alcohol3" ).prop( "checked", false )
+                $( "#cv_alcohol4" ).prop( "checked", false )
+                $( "#cv_alcohol5" ).prop( "checked", false )
+                $( "#cv_alcohol6" ).prop( "checked", false )
+            }
+        }
+        function true_alcohol2(){
+            $( "#cv_alcohol3" ).prop( "checked", false )
+            $( "#cv_alcohol6" ).prop( "checked", false )
+        }
+        function true_alcohol3(){
+            $( "#cv_alcohol4" ).prop( "checked", false )
+            $( "#cv_alcohol5" ).prop( "checked", false )
+            $( "#cv_alcohol6" ).prop( "checked", false )
+        }
+        function true_alcohol4(){
+            $( "#cv_alcohol3" ).prop( "checked", false )
+            $( "#cv_alcohol5" ).prop( "checked", false )
+            $( "#cv_alcohol6" ).prop( "checked", false )
+        }
+        function true_alcohol5(){
+            $( "#cv_alcohol3" ).prop( "checked", false )
+            $( "#cv_alcohol4" ).prop( "checked", false )
+            $( "#cv_alcohol6" ).prop( "checked", false )
+        }
+        function true_alcohol6(){
+            $( "#cv_alcohol3" ).prop( "checked", false )
+            $( "#cv_alcohol4" ).prop( "checked", false )
+            $( "#cv_alcohol5" ).prop( "checked", false )
+        }
+        function oc_Obesity(){
+            var oc = document.getElementById('cv_Obesity')
+            if(oc.checked == true){
+
+            document.getElementById('ObesityHide').style.display = "";
+            doctorObesity()
+            }else{
+            document.getElementById('ObesityHide').style.display = "none";
+            document.getElementById("Doctor_Obesity").innerHTML = ""; 
+            $( "#cv_Obesity2" ).prop( "checked", false )
+            $( "#cv_Obesity3" ).prop( "checked", false )
+            $( "#cv_Obesity4" ).prop( "checked", false )
+            }
+        }
+        function true_Obesity2(){
+            $( "#cv_Obesity3" ).prop( "checked", false )
+            $( "#cv_Obesity4" ).prop( "checked", false )
+        }
+        function true_Obesity3(){
+            $( "#cv_Obesity2" ).prop( "checked", false )
+            $( "#cv_Obesity4" ).prop( "checked", false )
+        }
+        function true_Obesity4(){
+            $( "#cv_Obesity2" ).prop( "checked", false )
+            $( "#cv_Obesity3" ).prop( "checked", false )
+        }
+        function oc_cda(){
+            var oc = document.getElementById('cv_cda')
+
+            if(oc.checked == true){
+            
+                document.getElementById('Doctor_cda').style.display = "";
+                doctorCDA()
+                
+            }else{
+            
+                document.getElementById('Doctor_cda').style.display = "none";
+                document.getElementById("Doctor_cda").innerHTML = ""; 
+            }
+        }
+        function oc_Stroke(){
+            var oc = document.getElementById('cv_Stroke')
+
+            if(oc.checked == true){
+            
+                document.getElementById('StrokeHide').style.display = "";
+                doctorStroke()
+                
+            }else{
+            
+                document.getElementById('StrokeHide').style.display = "none";
+                document.getElementById("Doctor_Stroke").innerHTML = "";
+                $( "#cv_Stroke3" ).prop( "checked", false )
+                $( "#cv_Stroke4" ).prop( "checked", false )
+            }
+        }
+        function oc_cad(){
+            var oc = document.getElementById('cv_cad')
+
+            if(oc.checked == true){
+            
+                document.getElementById('cadallhide').style.display = "";
+                doctorCAD()
+                
+            }else{
+            
+                document.getElementById('cadallhide').style.display = "none";
+                document.getElementById("Doctor_cda").innerHTML = ""; 
+                $( "#cv_cad2" ).prop( "checked", false )
+                $( "#cv_cad3" ).prop( "checked", false )
+                $( "#cv_cad4" ).prop( "checked", false )
+            }
+        }
+        function oc_pad(){
+            var oc = document.getElementById('cv_pad')
+
+            if(oc.checked == true){
+            
+                document.getElementById('padhide').style.display = "";
+                doctorpad()
+                
+            }else{
+            
+                document.getElementById('padhide').style.display = "none";
+                document.getElementById("Doctor_pad").innerHTML = ""; 
+            }
+        }
+        function oc_ckd(){
+            var oc = document.getElementById('cv_ckd')
+
+            if(oc.checked == true){
+            
+                document.getElementById('ckdhide').style.display = "";
+                doctorckd()
+                
+            }else{
+            
+                document.getElementById('ckdhide').style.display = "none";
+                document.getElementById("Doctor_pad").innerHTML = ""; 
+            }
+        }
+        function oc_chf(){
+            var oc = document.getElementById('cv_chf')
+
+            if(oc.checked == true){
+            
+                document.getElementById('chfallhide').style.display = "";
+                doctorchf()
+                
+            }else{
+            
+                document.getElementById('chfallhide').style.display = "none";
+                document.getElementById("Doctor_chf").innerHTML = ""; 
+                $( "#cv_chf2" ).prop( "checked", false )
+                $( "#cv_chf3" ).prop( "checked", false )
+                $( "#cv_chf4" ).prop( "checked", false )
+                
+            }
+        }
+        function true_chf2(){
+            var true3 = document.getElementById('cv_chf3')
+            var true4 = document.getElementById('cv_chf4')
+                true3.checked = false;
+                true4.checked = false;
+        }
+        function true_chf3(){
+            var true2 = document.getElementById('cv_chf2')
+            var true4 = document.getElementById('cv_chf4')
+                true2.checked = false;
+                true4.checked = false;
+        }
+        function true_chf4(){
+            var true3 = document.getElementById('cv_chf3')
+            var true2 = document.getElementById('cv_chf2')
+                true3.checked = false;
+                true2.checked = false;
+        }
+        function oc_af(){
+            var oc = document.getElementById('od_af')
+
+            if(oc.checked == true){
+            
+                document.getElementById('afhide').style.display = "";
+                doctorAF()
+                
+            }else{
+            
+                document.getElementById('afhide').style.display = "none";
+                document.getElementById("Doctor_af").innerHTML = ""; 
+            }
+        }
+        function oc_copd(){
+            var oc = document.getElementById('od_copd')
+
+            if(oc.checked == true){
+            
+                document.getElementById('copdhide').style.display = "";
+                doctorCOPD()
+                
+            }else{
+            
+                document.getElementById('copdhide').style.display = "none";
+                document.getElementById("Doctor_copd").innerHTML = ""; 
+            }
+        }
+        function oc_gout(){
+            var oc = document.getElementById('od_gout')
+
+            if(oc.checked == true){
+            
+                document.getElementById('gouthide').style.display = "";
+                doctorGOUT()
+                
+            }else{
+            
+                document.getElementById('gouthide').style.display = "none";
+                document.getElementById("Doctor_gout").innerHTML = ""; 
+            }
+        }
+        function oc_osa(){
+            var oc = document.getElementById('sc_osa')
+
+            if(oc.checked == true){
+            
+                document.getElementById('osahide').style.display = "";
+                doctorOSA()
+                
+            }else{
+            
+                document.getElementById('osahide').style.display = "none";
+                document.getElementById("Doctor_osa").innerHTML = ""; 
+            }
+        }
+        function oc_Hyperthyroid(){
+            var oc = document.getElementById('sc_Hyperthyroid')
+
+            if(oc.checked == true){
+            
+                document.getElementById('Hyperthyroidhide').style.display = "";
+                doctorHyperthyroid()
+                
+            }else{
+            
+                document.getElementById('Hyperthyroidhide').style.display = "none";
+                document.getElementById("Doctor_Hyperthyroid").innerHTML = ""; 
+            }
+        }
+        function oc_Hypothyroid(){
+            var oc = document.getElementById('sc_Hypothyroid')
+
+            if(oc.checked == true){
+            
+                document.getElementById('Hypothyroidhide').style.display = "";
+                doctorHypothyroid()
+                
+            }else{
+            
+                document.getElementById('Hypothyroidhide').style.display = "none";
+                document.getElementById("Doctor_Hypothyroid").innerHTML = ""; 
+            }
+        }
+        //ฟังก์ชันสำหรับแสดง textarea เมื่อเลือก Secondary cause   checkbox (Other)
+        function ck_Other(){ 
+            
+            var ck = document.getElementById('checkboxOther');
+
+        
+            if(ck.checked == true){
+            
+                document.getElementById('ck_other').style.display = "";
+                
+            }else{
+            
+                document.getElementById('ck_other').style.display = "none";
+                document.getElementById("ck_other").innerHTML = ""; 
+            }
+        }
+
+        //Spinner loading
+        function spinning(){
+
+            document.getElementById("loading-cvrisk").innerHTML = "";
+
+        }
+
+        //ดึงข้อมูลคนไข้
+        function reload_patient() {
+            
+            if(sessionStorage.userID != null){
+                // testcheck = document.getElementById("inputHN").value.toString();
+                if (document.getElementById("inputHN").value.toString() != "") {
+                    sessionStorage.hncode = "";
+                    sessionStorage.en = "";
+                    getPatient(document.getElementById("inputHN").value.toString());
+                }
+                else {
+                    alert("กรุณาระบุ HN ก่อน");
+                }  
+
+            }else{
+
+                window.location = "login.html";
+            }
+        }
+        
+        //คีย์ลัดปุ่ม Enter  สำหรับดึงข้อมูลคนไข้
+        var input = document.getElementById("inputHN")
+            input.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                reload_patient();
+            }
+        });
+
+
+
+        function pageIndex(){
+
+                var url = window.location.href
+                var hn = ""
+                var emp = ""
+                var hncode_PatientList = ""
+
+
+                //เงื่อนไขกรณีเข้าสู่ระบบจากโปรแกรม Imed 
+                try{
+
+                    var url_data = url.split("?")[1];
+
+                    var _url = url_data.split("&");
+
+                    hn = _url[0].split("hn=")[1];
+
+                    emp = _url[1].split("emp=")[1];
+
+                    sessionStorage.setItem("userID", emp);
+                }
+                catch(err){}
+
+                //กรณีดึงข้อมูลผ่าน patient_list Page
+                try{
+
+                    var url_data = url.split("#")[1];
+                    // console.log(url_data)
+                     hncode_PatientList = url_data
+                }
+                catch(err){}
+
+
+            if(sessionStorage.hncode == null && emp != "" && hn !=""){
+                
+                    loginImed(emp,emp,hn)
+
+
+            }else if (emp != "" && sessionStorage.hncode != null && hn != ""){
+                
+                    loginImed(emp,emp,hn)
+
+            }else if (hncode_PatientList != "" && hncode_PatientList != null ){
+
+                    document.getElementById("inputHN").value = hncode_PatientList;
+                    reloadpage_local(hncode_PatientList);
+        
+            }else{
+
+                if(sessionStorage.userID != null){
+
+                    var c_txtHn =  document.getElementById("inputHN").value
+
+                    if (sessionStorage.hncode != "" && sessionStorage.en != "" && sessionStorage.hncode != null && sessionStorage.en  != null) {
+                            inputHN.value = sessionStorage.hncode;
+                            inputEn.value = sessionStorage.en;
+                            reloadpage_local(sessionStorage.hncode,sessionStorage.en);
+                            // getData_personnal();
+                        
+                    }else if (c_txtHn == ""){
+
+                        spinning();
+
+                        document.getElementById("loading-cvrisk").innerHTML = "<h3 align='Center'>ไม่มีการบันทึกข้อมูล</h3>";
+
+                    }else{
+
+                        spinning();
+
+                        document.getElementById("loading-cvrisk").innerHTML = "<h3 align='Center'>ไม่มีการบันทึกข้อมูล</h3>";
+                    }
+
+                }else{
+                    
+                }
+
+            }
+
+        }
+
+        
+        $( document ).ready(function() {
+
+            console.log( "ready!" );
+            const urlParams = new URLSearchParams(window.location.search);
+            const hn = urlParams.get('hn')
+            document.getElementById("inputHN").value = hn;
+            getPatient(document.getElementById("inputHN").value.toString());
+            document.getElementById("loader").style.display = "none";
+            //getDoctorcase();
+            pageIndex()
+            //Readyindex()
+            test()
+        })
+        function oc_diseasecheckboxend(item){
+            var oc_idcheckboxend = item.id;
+            console.log(oc_idcheckboxend)
+            var oc_doctor = oc_idcheckboxend;
+            var oc = document.getElementById(''+oc_idcheckboxend+'')
+            if(oc.checked == true){
+                $('.'+oc_id+'Hide').show();
+                doctorcase(oc_doctor)
+            }else{
+                $('.'+oc_id+'Hide').hide();
+                document.getElementById('Doctor'+oc_doctor+'').innerHTML = ""; 
+            }
+        }
+        function oc_disease(item){
+            var oc_id = item.id;
+            var oc_doctor = oc_id;
+            console.log(oc_id)
+            var oc = document.getElementById(''+oc_id+'')
+            if(oc.checked == true){
+                $('.'+oc_id+'Hide').show();
+                doctorcase(oc_doctor)
+            }else{
+                $('.'+oc_id+'Hide').hide();
+
+                //document.getElementById('Doctor'+oc_id+'').innerHTML = ""; 
+                $("#Doctor"+oc_id+"").html("");
+                
+                formdata = {
+                    "Disease_id": oc_id
+                }
+                $.ajax({
+                        type: "GET",
+                        url: "https://localhost:44306/api/Config",
+                        dataType: 'json',
+                        data: formdata,
+                        success: function (response) {
+                            var json_diseasedetail = JSON.parse(response);
+                            for(var y in json_diseasedetail){
+                            var diseasedetail_id = json_diseasedetail[y].diseasedetail_id
+                            var diseasedetail_type = json_diseasedetail[y].diseasedetail_Type
+                            var diseasedetail_text = diseasedetail_id + "text"
+                            if(diseasedetail_type == "checkboxplus"){
+                                //document.getElementById(diseasedetail_text).value = ''
+                                $("#"+diseasedetail_id+"").prop( "checked", false )
+                            }else{
+                                //document.getElementById(diseasedetail_id).value = "";
+                                $("."+diseasedetail_id+"").val("")
+                                $("#"+diseasedetail_id+"").prop( "checked", false )
+                            }
+                            }
+                        }
+            })
+            
+        }
+    }
+        var diseasedetailFL = ""
+        function oc_diseasedetail(item){
+            var oc_diseasedetail = item.id
+            if (diseasedetailFL != ""){
+                $("#"+diseasedetailFL+"").prop( "checked", false )
+                diseasedetailFL = "";
+            }
+            if(diseasedetailFL == ""){
+                diseasedetailFL = oc_diseasedetail
+            }
+
+        }
+        function doctorcase(oc_doctor){
+            formdata = {
+                "DiseaseDoctor": oc_doctor
+            }
+            var doctorcaseplus = "Doctor"+oc_doctor
+            $.ajax({
+                type: "GET",
+                url: "https://localhost:44306/api/Config",
+                dataType: 'json',
+                data: formdata,
+                success: function (response) {
+                    var Json_doctor = JSON.parse(response);
+                    var selectsetDoctorcase = document.getElementById(doctorcaseplus);
+                    var option = document.createElement("option");
+                    option.text = "Doctor Case";
+                    //Doctor_af.add(option, doctorcaseplus[0]);
+
+                    for (var i = 0; i < Json_doctor.length; i++) {
+                        var option = document.createElement("option");
+                        option.text = Json_doctor[i].doctor;
+                        selectsetDoctorcase.add(option, doctorcaseplus[i+1]);
+                    }
+                }
+            })
+        }
+        function logout(){
+
+            localStorage.clear();
+            sessionStorage.clear();
+        }
+    </script>
+
+</body>
+
+</html>
