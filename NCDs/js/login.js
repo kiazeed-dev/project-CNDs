@@ -11,14 +11,14 @@ function check_login() {
     }   
 }
 //เข้าสู่ระบบจาก Imed
-function loginImed(usr, pass , hn) {
+function loginImed(usr, pass,site, hn) {
 
     var _hn = hn
 
     formdata = {
         "_username": usr, 
         "_password": pass,
-        "_sitename":site,
+        "_siteid":site,
     }
     $.ajax({
         type: "POST",
@@ -66,7 +66,7 @@ function login(usr,pass,site) {
 
         "_username": usr, 
         "_password": pass,
-        "_sitename": site, 
+        "_siteid": site, 
        
     }
     $.ajax({

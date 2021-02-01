@@ -108,7 +108,7 @@
         $( document ).ready(function() {
         $.ajax({
         type: "GET",
-        url: "https://localhost:44306/api/LoginUser?_sitename=all",
+        url: "https://localhost:44306/api/LoginUser?_sitename=all&_siteid=all",
         dataType: 'json',
         success: function (response) {
             var json_response =JSON.parse(response);
@@ -116,11 +116,13 @@
             var selectsetDoctorcase = document.getElementById("selectsethospital");
             var option = document.createElement("option");
             option.text = "Hospital";
+            option.value = ""
             selectsethospital.add(option, selectsethospital[0]);
 
             for (var i = 0; i < json_response.length; i++) {
                 var option = document.createElement("option");
                 option.text = json_response[i].ht_sitename;
+                option.value = json_response[i].ht_siteid;
                 selectsetDoctorcase.add(option, selectsethospital[i+1]);
             }
         }

@@ -371,38 +371,7 @@ function SelectddlEn(hn,en) {
         alert("กรุณาระบุ HN")
     }   
 }
-//ฟังก์ชัน สำหรับset doctor case โดยใช้ hn
-/*
-function getDoctorcasebyHN()
-{
-    document.getElementById("selectsetDoctorcase").value = "";
-    if (sessionStorage.hncode != null || sessionStorage.hncode != ""){
-        $.ajax({
-            type: "GET",
-            url: "http://172.18.62.245/HTApi/api/Patients?hncode="+sessionStorage.hncode,
-            dataType: 'json',
-            success: function (response) {
-                if (response == null || response == ""){
-                    document.getElementById("butregister").style.visibility = "visible";
-                    document.getElementById("butretrieve").style.visibility = "hidden";
-                    document.getElementById("selectsetDoctorcase").value = "";
-                }else{
-                    document.getElementById("butregister").style.visibility = "hidden";
-                    document.getElementById("butretrieve").style.visibility = "visible";
-                    var JSON_doctor = JSON.parse(response);
-                    var docname = JSON_doctor[0].doctorcase;
-                    document.getElementById("selectsetDoctorcase").value = docname;
-                }
-            },
-            error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-            }
-        });
-    }else{
 
-
-    }
-}
-*/
 //ฟังก์ชัน สำหรับนำข้อมูลเฉพาะ EN ที่มีใน DB EMR ดึงมาตรวจสอบกับ Visit ทั้งหมด
 function cs_dbEn(_Hn){ 
 
@@ -1027,202 +996,9 @@ function submitData_Patient() { //บันทึกข้อมูลพื้�
               // console.log("Add new product failed, error is '" + thrownError + "'");
           }
       });
-}
+}  
 
-function getCv_Risk(){
 
-    clear_cvrisk()
-
-    var cv_risk_list = "";
-
-        if (sessionStorage.hncode != null || sessionStorage.hncode != ""){
-    
-            $.ajax({
-    
-                type: "GET",
-                url: "https://localhost:44306/api/CVLAB?hncode="+sessionStorage.hncode,
-                dataType: 'json',
-                success: function (response) {
-
-                    if (response == null || response == ""){
-
-                        document.getElementById("colum_cvriskname").innerHTML =   ""
-
-                        document.getElementById("loading-cvrisk").innerHTML =  ""
-                        // document.getElementById("loading-cvrisk").innerHTML = "<h3 align='Center'>ไม่พบข้อมูล</h3>";
-                        getData_personnal();
-
-                    }else{
-
-                        cv_risk_list = JSON.parse(response);
-                        getData_personnal()
-                        
-
-                    }
-                    //ฟังก์ชันดึงสำหรับข้อมูล Data_personnal จาก DB EMR
-                    function getData_personnal(){
-                        $.ajax({
-                    
-                            type: "GET",
-                            url: "https://localhost:44306/api/BaseInfo?hncode="+sessionStorage.hncode,
-                            dataType: 'json',
-                            success: function (data) {
-
-                                if (data == ""){
-                    
-                                    document.getElementById("BaseCheck").innerHTML = "<button type='button' class='btn btn-primary' onclick='submitData_Patient()'>SAVE</button>"
-                    
-                                    document.getElementById("bl_hypertension_year").value = '';   
-                                    document.getElementById("sc_other").innerHTML = "";
-                                    document.getElementById("cvrisk_date").value = '';
-                                    document.getElementById("cvrisk_percent").value = '';
-                                    document.getElementById("cvrisk_multiply").value = '';   
-                                    $( "#bl_unknow" ).prop( "checked", false )
-                                    $( "#bl_resistant_hypertension" ).prop( "checked", false )
-                                    $( "#cv_dm" ).prop( "checked", false )
-                                    $( "#cv_dlp" ).prop( "checked", false)
-                                    $( "#cv_smoking" ).prop( "checked", false)
-                                    $( "#cv_cda" ).prop( "checked", false )
-                                    $( "#od_af" ).prop( "checked", false)
-                                    $( "#od_copd" ).prop( "checked", false)
-                                    $( "#od_gout" ).prop( "checked", false )
-                                    $( "#sc_osa" ).prop( "checked", false)
-                    
-                                    $( "#checkboxOther" ).prop( "checked", false )
-                                    ck_Other()
-                    
-                                    console.log("null")
-                                }else{
-                    
-                                    var json_response =  JSON.parse(data)
-                    
-                                    var response = json_response[0]
-                    
-                                    if (response != "error"){
-                                    
-                                        document.getElementById("BaseCheck").innerHTML =  "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirm_editModal' >EDIT</button>"
-                                        document.getElementById("bl_hypertension_year").setAttribute("value",response.bl_hypertension_year);
-                                        document.getElementById("sc_other").innerHTML = (response.sc_other);
-                             
-                                    if (cv_risk_list.length > 0){
-
-                                        if (cv_risk_list.length < 3){
-
-                                            document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
-
-                                            document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
-    
-                                            //ตารางแสดง CV-Risk
-                                            for (var i = 0 ; i < cv_risk_list.length ; i++){
-
-                                                let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
-                                                let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
-                        
-                                                var cv_table_id = "display_cvrisk"+i+""
-                        
-                                                document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
-                                                                                                      
-                                            }
-
-                                            spinning();
-    
-                                        }else{
-
-                                            document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
-    
-                                            document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
-    
-                                            for (var i = 0 ; i < 3 ; i++){
-                        
-                                                let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
-                                                let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
-
-                                                var cv_table_id = "display_cvrisk"+i+""
-                                                
-                                                document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
-                                            }
-
-                                            spinning();
-    
-                                        }
-                                    }
-
-                                        //แสดงการ Check  True/False
-                                        $( "#bl_unknow" ).prop( "checked", response.bl_unknow )
-                                        $( "#bl_resistant_hypertension" ).prop( "checked", response.bl_resistant_hypertension )
-                                        $( "#cv_dm" ).prop( "checked", response.cv_dm )
-                                        $( "#cv_dlp" ).prop( "checked", response.cv_dlp )
-                                        $( "#cv_smoking" ).prop( "checked", response.cv_smoking )
-                                        $( "#cv_cda" ).prop( "checked", response.cv_cda )
-                                        $( "#od_af" ).prop( "checked", response.od_af )
-                                        $( "#od_copd" ).prop( "checked", response.od_copd )
-                                        $( "#od_gout" ).prop( "checked", response.od_gout )
-                                        $( "#sc_osa" ).prop( "checked", response.sc_osa )
-                    
-                                        //set ค่า BaseInfo ให้ value เป็นค่าตามที่เรียกข้อมูลมาแสดง
-                                        document.getElementById("bl_unknow").setAttribute("value",response.bl_unknow)
-                                        document.getElementById("bl_resistant_hypertension").setAttribute("value",response.bl_resistant_hypertension)
-                                        document.getElementById("cv_dm").setAttribute("value",response.cv_dm)
-                                        document.getElementById("cv_dlp").setAttribute("value",response.cv_dlp )
-                                        document.getElementById("cv_smoking").setAttribute("value",response.cv_smoking )
-                                        document.getElementById("cv_cda").setAttribute("value",response.cv_cda)
-                                        document.getElementById("od_af").setAttribute("value",response.od_af)
-                                        document.getElementById("od_copd").setAttribute("value",response.od_copd)
-                                        document.getElementById("od_gout").setAttribute("value",response.od_gout )
-                                        document.getElementById("sc_osa").setAttribute("value", response.sc_osa)
-                    
- 
-                                        if (response.sc_other == "" || response.sc_other == null){
-                                        
-                                        }else{
-                    
-                                            $( "#checkboxOther" ).prop( "checked", true )
-                                            ck_Other()
-                    
-                                        }
-                                    }else{
-                    
-                                        document.getElementById("bl_hypertension_year").value = '';
-                                        document.getElementById("sc_other").innerHTML = "";
-                                        document.getElementById("cvrisk_date").value = '';
-                                        document.getElementById("cvrisk_percent").value = '';
-                                        document.getElementById("cvrisk_multiply").value = '';   
-                    
-                                        $( "#bl_unknow" ).prop( "checked", false )
-                                        $( "#bl_resistant_hypertension" ).prop( "checked", false )
-                                        $( "#cv_dm" ).prop( "checked", false )
-                                        $( "#cv_dlp" ).prop( "checked", false)
-                                        $( "#cv_smoking" ).prop( "checked", false)
-                                        $( "#cv_cda" ).prop( "checked", false )
-                                        $( "#od_af" ).prop( "checked", false)
-                                        $( "#od_copd" ).prop( "checked", false)
-                                        $( "#od_gout" ).prop( "checked", false )
-                                        $( "#sc_osa" ).prop( "checked", false)
-                    
-                                        $( "#checkboxOther" ).prop( "checked", false )
-                                        ck_Other()
-                                    }
-                                }
-                              },
-                              error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-                
-                              }
-                          });
-                    }
-                },
-                error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-
-                }
-            });
-        }else{
-    
-    
-        }
-}   
 
 //ฟังก์ชันแก้ไขข้อมูล BaseInfo
 function UpdateBaseInfo(){
@@ -1453,30 +1229,7 @@ function clear_IndexPage(){
     alert("ไม่พบข้อมูลคนไข้")
 
 }
-/*
-//ดึงข้อมูล แพทย์ประจำเคส
-function getDoctorcase(){
-    $.ajax({
-        type: "GET",
-        url: "http://172.18.62.245/ImedWebApi/api/Doctorcase",
-        dataType: 'jsonp',
-        success: function (response) {
-            var json_response =JSON.parse(response);
 
-            var selectsetDoctorcase = document.getElementById("selectsetDoctorcase");
-            var option = document.createElement("option");
-            option.text = "";
-            selectsetDoctorcase.add(option, selectsetDoctorcase[0]);
-
-            for (var i = 0; i < json_response.length; i++) {
-                var option = document.createElement("option");
-                option.text = json_response[i].alias_name;
-                selectsetDoctorcase.add(option, selectsetDoctorcase[i+1]);
-            }
-        }
-    });
-}
-*/
 //ดึงข้อมูล patient ทั้งหมด
 async function allgetData(){
     var drcase = document.getElementById("selectsetDoctorcase").value;
@@ -1501,253 +1254,7 @@ function updateHTRegistry(inputHN,update,drcase)
     });
 }
 
-/*
-//call api visit?hncode
-function retrieve(inputHN,update,drcase)
-{
-    $.ajax({
-        type: "GET",
-        url: "http://172.18.62.245/ImedWebApi/api/AllData?hncode="+inputHN+"&update="+update+"&drcase="+drcase,
-        dataType: 'jsonp',
-        success: function (response) {
-            if (response != ""){
-                toastr.success('บันทึกข้อมูลสำเร็จ');
-                location.reload();
-            }
-            $('#Modal1').modal('hide');
-        },error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-            toastr.error();('ไม่สามารถบันทึกข้อมูลได้');
-            $('#Modal1').modal('hide');
-            console.log("+++++++++++++++++++++++++  Bot notification failed, error is '" + thrownError + "' " + jqXHR.responseText);
-        }
-    }); 
-}
-*/
 
-/*
-function oc_DM(){
-    console.log("texsssss")
-}
-*/
-/*
-function Readyindex(){
-    formdata = {
-        "name": 'Baseline Condition', 
-    }
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:44306/api/Config",
-        dataType: 'json',
-        data: formdata,
-        success: function (response) {
-            var json_response =JSON.parse(response);
-            console.log(json_response)
-            var diseaseX = "";
-            for (var y in json_response) {
-                var disease = json_response[y].disease
-                var disease_Type = json_response[y].disease_Type
-                console.log(disease)
-                if(diseaseX == ""){
-                    diseaseX = disease
-                }
-                else{
-                    diseaseX = diseaseX + "  " + disease
-                }
-                if(disease_Type = checkbox){
-                    checkbox();
-                }
-                
-            function checkbox(){
-                diseaseX = diseaseX.split("  ");
-                diseaseX = [...new Set(diseaseX)]; 
-                console.log(diseaseX)
-
-                diseaseL = diseaseX.length;
-                console.log(diseaseL)
-                console.log(diseaseX)
-                var diseaseXF = ""
-                var diseaseFUN = ""
-                for (i = 0; i < diseaseL;i++){
-                    
-                    diseaseXF += '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input"  onClick="oc_'+ diseaseX[i] +'()' +'"id="cv_'+ diseaseX[i] +'"  value="false"  onchange="this.value=this.checked? true : false" ><label class="custom-control-label" for="cv_'+ diseaseX[i] +'">'+ diseaseX[i] +'</label></div>';
-                    document.getElementById("Baselinedisease").innerHTML = diseaseXF
-                    console.log(diseaseXF)
-
-                }
-            }
-            formdata = {
-                "Disease": disease, 
-            }
-            console.log(formdata)
-            var diseasedetailXF = "";
-            $.ajax({
-                type: "GET",
-                url: "https://localhost:44306/api/Config",
-                dataType: 'json',
-                data: formdata,
-                success: function (response) {
-                    var data = JSON.parse(response);
-                    console.log(data)
-                    for (var y in data) {
-                        var diseasedetail = data[y].diseasedetail
-                        var diseasedetail_Type = data[y].diseasedetail_type
-                        console.log(diseasedetail)
-                        console.log(diseasedetail_Type)
-                            if(diseasedetail_Type = checkbox){
-                                checkbox()
-                            }
-                            function checkbox(){
-                                if(diseasedetailXF == ""){
-                                    diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="true_'+diseasedetail+'" id="cv_'+diseasedetail+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" style="display:none;" id = "'+diseasedetail+'" for="cv_'+diseasedetail+'>'+diseasedetail+'</label></div>';
-                                }
-                                else{
-                                    diseasedetailXF = diseasedetailXF + '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="true_'+diseasedetail+'" id="cv_'+diseasedetail+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" style="display:none;" id = "'+diseasedetail+'" for="cv_'+diseasedetail+'>'+diseasedetail+'</label></div>';
-                                }
-                                console.log(diseasedetailXF)
-                            }
-                            
-                }
-                }
-            })
-        }} 
-    })
-    console.log(disease)
-}
-*/
-/*
-function Readyindex(){
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:44306/api/Config?Disease=all",
-        dataType: 'json',
-        success: function (response) {
-            var alllabel = JSON.parse(response);
-            var fristlabel = ""
-            var FNNlabel = ""
-            for(var y in alllabel){
-                var label = alllabel[y].name
-                frlabel = ""
-                if(frlabel == ""){
-                    frlabel = '<div class="border-top"><div class="form-group row"><label class="col-md-3 text-right">'+label+'</label><div class="col-md-9">'
-                    fristlabel = frlabel
-                    disease(fristlabel)
-                }
-            }
-    function disease(fristlabel){
-    formdata = {
-        "name": label, 
-    }
-    var fristlabelFN = ""
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:44306/api/Config",
-        dataType: 'json',
-        data: formdata,
-        success: function (response) {
-            var json_disease =JSON.parse(response);
-            var disease_detail = ""
-            FNNlabel = "";
-            disease_detail = fristlabel
-            for (var y in json_disease) {
-                var disease = json_disease[y].disease
-                var disease_Type = json_disease[y].disease_Type
-                var diseaseid = json_disease[y].disease_id
-                if(disease_Type == "checkbox"){
-                    checkbox();
-                }else if(disease_Type == "checkboxend"){
-                    checkboxend();
-                }else{
-                    console.log("---------------ERROR---------------")
-                }
-
-        function checkboxend(){
-            var disease_end = ""
-            if(disease_end == ""){
-                disease_end = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasecheckboxend(this);" id="'+ diseaseid +'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label></div>'
-            }else{
-                disease_end = disease_end  + '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasecheckboxend(this);" id="'+ diseaseid +'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label></div>'
-            }
-            disease_end = disease_end + '<div class="col-sm-9"><input type="hidden" class="form-control" id="inputdoctorcase'+diseaseid+'"><select class="form-control" style="display:none;" id="Doctor'+diseaseid+'" value=""></select></div>'
-            disease_detail = disease_detail + disease_end 
-            FNNlabel += disease_detail
-            //document.getElementById("fristlabel").innerHTML = FNNlabel
-        }
-        
-        function checkbox(){
-        formdata = {
-            "Disease": disease
-        }
-        var diseasedetailXF = "";
-        var diseaseT = "";
-        diseaseT = disease;
-        var diseaseTid = "";
-        diseaseTid = diseaseid;
-        $.ajax({
-                type: "GET",
-                url: "https://localhost:44306/api/Config",
-                dataType: 'json',
-                data: formdata,
-                success: function (response) {
-                    var json_diseasedetail = JSON.parse(response);
-                    for (var y in json_diseasedetail){
-                        var diseasedetail = json_diseasedetail[y].diseasedetail
-                        var diseasedetail_type = json_diseasedetail[y].diseasedetail_type
-                        var diseasedetailid = json_diseasedetail[y].diseasedetail_id
-                        var diseasedetailplaceholder = json_diseasedetail[y].diseasedetail_placeholder
-                        diseasedetailXF = "";
-
-                        if(diseasedetail_type == "customtext"){
-                            customtext();
-                        }else if (diseasedetail_type == "checkbox"){
-                            checkbox();
-                        }else if (diseasedetail_type == "checkboxplus"){
-                            checkboxplus();
-                        }else{
-                            console.log("++++++++error++++++++")
-                        }
-                        
-                        function customtext(){
-                            if(diseasedetailXF == ""){
-                                diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseTid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseTid +'">'+ diseaseT +'</label>' + '<div style="display:none;" id='+diseaseTid+'Hide><div class="form-group row "><div class="input-group "><div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><label for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div><div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'" placeholder="'+diseasedetailplaceholder+'"></div></div></div>'
-                            }else{
-                                diseasedetailXF = diseasedetailXF + '<div class="form-group row "><div class="input-group "><div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><label for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div><div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'" placeholder="'+diseasedetailplaceholder+'"></div></div></div>'
-                            }
-                        }
-                        function checkbox(){
-                            if(diseasedetailXF == ""){
-                                diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseTid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseTid +'">'+ diseaseT +'</label>' + '<div style="display:none;" id='+diseaseTid+'Hide><div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div>'
-                            }else{
-                                diseasedetailXF = diseasedetailXF + '<div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div>'
-                            }
-                        }
-                        function checkboxplus(){
-                            if(diseasedetailXF == ""){
-                                diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseTid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseTid +'">'+ diseaseT +'</label>' + '<div style="display:none;" id='+diseaseTid+'Hide><div class="input-group">  <div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div>  </div> <div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'text" placeholder="'+diseasedetailplaceholder+'"></div></div>'
-                            }else{
-                                diseasedetailXF = diseasedetailXF + '<div class="input-group ">  <div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div>  </div> <div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'text" placeholder="'+diseasedetailplaceholder+'"></div></div>'
-                            }
-
-                        }
-                    }
-                    diseasedetailXF = diseasedetailXF  + '<div class="col-sm-9"><input type="hidden" class="form-control" id="inputdoctorcase'+diseaseTid+'"><select class="form-control" id="Doctor'+diseaseTid+'" value=""></select></div>'
-                    disease_detail = disease_detail + diseasedetailXF  
-                    disease_detail = disease_detail + '</div></div>'
-                    FNNlabel += disease_detail
-                    //document.getElementById("fristlabel").innerHTML = FNNlabel
-                }
- 
-        })
-        }
-
-    }
-    }
-    })
-}
-
-}
-})
-}
-*/
 function test(){
 
     $.ajax({
@@ -1914,3 +1421,171 @@ function doctor(diseaseid){
 }
 
 // 
+
+// เรียกข้อมูลพื้นฐานของ hn
+function getCv_Risk(){
+
+    clear_cvrisk()
+
+    var cv_risk_list = "";
+
+        if (sessionStorage.hncode != null || sessionStorage.hncode != ""){
+    
+            $.ajax({
+    
+                type: "GET",
+                url: "https://localhost:44306/api/CVLAB?hncode="+sessionStorage.hncode,
+                dataType: 'json',
+                success: function (response) {
+
+                    if (response == null || response == ""){
+
+                        document.getElementById("colum_cvriskname").innerHTML =   ""
+
+                        document.getElementById("loading-cvrisk").innerHTML =  ""
+                        // document.getElementById("loading-cvrisk").innerHTML = "<h3 align='Center'>ไม่พบข้อมูล</h3>";
+                        getData_personnal();
+
+                    }else{
+
+                        cv_risk_list = JSON.parse(response);
+                        getData_personnal()
+
+                    }
+
+
+                    //ฟังก์ชัน ดึงข้อมูล PersonalInfo (ด้านขวา) จาก DB EMR
+                    function getData_personnal(){
+                        $.ajax({
+                    
+                            type: "GET",
+                            url: "https://localhost:44306/api/Disease?Hn="+sessionStorage.hncode,
+                            dataType: 'json',
+                            success: function (data) {
+
+                                // แปลเป็น Json
+                                var json_datajs = JSON.parse(data);
+
+                                // Column TopicDataJson มีรูปแบบข้อมููลเป็น Json 
+                                var topicdata = json_datajs[0].TopicDataJson;
+
+
+                                if (json_datajs == ""){
+                    
+                                    document.getElementById("BaseCheck").innerHTML = "<button type='button' class='btn btn-primary' onclick='submitData_Patient()'>SAVE</button>"
+                    
+                                    document.getElementById("bl_hypertension_year").value = '';   
+                                    document.getElementById("sc_other").innerHTML = "";
+                                    document.getElementById("cvrisk_date").value = '';
+                                    document.getElementById("cvrisk_percent").value = '';
+                                    document.getElementById("cvrisk_multiply").value = '';
+
+                                    console.log("null");
+
+                                    // 
+                                    
+
+                                    // 
+                                }else{
+                    
+                                    var topicdataJS = JSON.parse(topicdata)
+                    
+                                    if (topicdataJS != "error"){
+                                    
+                                        document.getElementById("BaseCheck").innerHTML =  "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirm_editModal' >EDIT</button>"
+                                        // ****
+                             
+                                    if (cv_risk_list.length > 0){
+
+                                        if (cv_risk_list.length < 3){
+
+                                            document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
+
+                                            document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
+    
+                                            //ตารางแสดง CV-Risk
+                                            for (var i = 0 ; i < cv_risk_list.length ; i++){
+
+                                                let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
+                                                let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
+                        
+                                                var cv_table_id = "display_cvrisk"+i+""
+                        
+                                                document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
+                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
+                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
+                                                                                                      
+                                            }
+
+                                            spinning();
+    
+                                        }else{
+
+                                            document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
+    
+                                            document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
+    
+                                            for (var i = 0 ; i < 3 ; i++){
+                        
+                                                let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
+                                                let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
+
+                                                var cv_table_id = "display_cvrisk"+i+""
+                                                
+                                                document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
+                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
+                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
+                                            }
+
+                                            spinning();
+    
+                                        }
+                                    }
+
+                                        //แสดงการ Check  True/False
+                                    
+                                        //set ค่า BaseInfo ให้ value เป็นค่าตามที่เรียกข้อมูลมาแสดง
+                                        // document.getElementById("bl_unknow").setAttribute("value",response.bl_unknow)
+                                        // var topicdataJS = JSON.parse(topicdata)
+                                        
+                                        
+                                        if (topicdataJS == "" || topicdataJS == null) {
+
+                                            // 
+
+                                        }else{
+                    
+                                            $( "#checkboxOther" ).prop( "checked", true )
+                                            ck_Other()
+                    
+                                        }
+                                    }else{
+                    
+                                        document.getElementById("bl_hypertension_year").value = '';
+                                        document.getElementById("sc_other").innerHTML = "";
+                                        document.getElementById("cvrisk_date").value = '';
+                                        document.getElementById("cvrisk_percent").value = '';
+                                        document.getElementById("cvrisk_multiply").value = '';   
+                    
+                                        // *
+                                    }
+                                }
+                              },
+                              error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+                
+                              }
+                          });
+                    }
+                },
+                error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+
+                }
+            });
+        }else{
+    
+    
+    
+        }
+    
+}
+
