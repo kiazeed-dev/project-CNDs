@@ -71,11 +71,14 @@ function getEnVitalsign(hncode){
     sessionStorage.removeItem("setBTlatestDate")  //วันที่บันทึกล่าสุด
     sessionStorage.removeItem("setBTfirstDate") //วันที่บันทึกที่ต่ำที่สุด
     
-    realtime_data();
+    // realtime_data();
 
-    checkVercine();
+    // checkVercine();
 
     // checkAge();
+
+    column_Visit();
+
 }
 
 function checkVercine() {
@@ -83,7 +86,7 @@ function checkVercine() {
     toastr.warning(' Name : '+sessionStorage.patient_name+' <br> Hn : '+sessionStorage.hncode+'','ระบบกำลังดึงข้อมูลการตรวจ');
 
     var _StorageHn = sessionStorage.hncode;
-    $.ajax({
+    $.ajax({    
         type: "GET",
         url: "http://172.18.62.245/ImedWebApi/api/FluVaccine?hncode="+_StorageHn,
         dataType: 'jsonp',
@@ -146,7 +149,7 @@ function column_Visit(){
  
     $.ajax({
         type: "GET",
-        url: "http://172.18.62.245/HTApi/api/Lab_DataResult?hncode="+sessionStorage.hncode,
+        url: "https://localhost:44306/api/LabResult?hncode="+sessionStorage.hncode+"&ht_siteid="+sessionStorage.userSITE+"",
         dataType: 'json',
         // contentType: 'application/json; charset=utf-8',
         success: function (response) {
@@ -544,7 +547,7 @@ function realtime_data(){
     //Get Data Patient_LabResult from OutStanding   (ดึงข้อมูลจาก Outstanding เพื่อนำ en มาเช็คกับ  en  ของข้อมูลใน Imed)
     $.ajax({
         type: "GET",
-        url: "http://172.18.62.245/HTApi/api/Lab_DataResult?hncode="+sessionStorage.hncode, //LabResult จาก Outstanding
+        url: "https://localhost:44306/api/LabResult?hncode="+sessionStorage.hncode+"&ht_siteid="+sessionStorage.userSITE+"", //LabResult จาก Outstanding
         dataType: 'json',
         // data:JSON.stringify(obj),
         success: function (response) {
@@ -630,7 +633,7 @@ function realtime_data(){
 
                                             $.ajax({
                                                 type: "PUT",
-                                                url: "http://172.18.62.245/HTApi/api/Realtime_update/",
+                                                url: "https://localhost:44306/api/Realtime_update/",
                                                 dataType: 'json',
                                                 data: formdata,
                                                 headers: {
@@ -702,7 +705,7 @@ function update_LabResult(){
 
     $.ajax({
         type: "PUT",
-        url: "http://172.18.62.245/HTApi/api/Lab_DataResult/",
+        url: "https://localhost:44306/api/LabResult",
         dataType: 'json',
         data: formdata,
         headers: {

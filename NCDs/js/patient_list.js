@@ -23,7 +23,15 @@ function _patientList(){
                     { "data": "register_rowid" },
                     { "data": "patient_hncode", render: function (data, type, row, meta) {
                             return type === 'display' ?
-                                '<a href ="index.html#'+row.patient_hncode+'"><p type="checkbox" id="'+row.patient_hncode +'" onclick="view_DataPatient(id)">'+row.patient_hncode+'</p></a>'  :
+                                '<a href ="index.html#'+row.patient_hncode+'"><p type="checkbox" id="'+row.patient_hncode +'" onclick="view_DataPati
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                .ent(id)">'+row.patient_hncode+'</p></a>'  :
                                 data;
                         }
                     },

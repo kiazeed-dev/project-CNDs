@@ -73,9 +73,49 @@ function SelectddlEn(hn,en) {
         // $( "#od_gout" ).prop( "checked", false )
         // $( "#sc_osa" ).prop( "checked", false)
         // $( "#checkboxOther" ).prop( "checked", false )
-        for (var index = 0; index < localStorage.length; index++) {
-            $(""+localStorage.idDs_+[index]+"").prop("checked", false)
-            $(""+localStorage.idDsdt_+[index]+"").prop("checked", false)
+
+        for (var index = 0; index < eiei.length; index++) {
+            var diseaseid = eiei[index].disease_id;
+            var diseasedetailid = eiei[index].diseasedetail_id;
+            var diseasedetailType = eiei[index].diseasedetail_Type;
+
+            if ([index] == 0) {
+
+                    $("#"+[diseaseid]).prop("checked", false)
+                    $("#"+diseasedetail_id+"").val("")
+
+            } else if (eiei[index].disease_id == eiei[index-1].disease_id){
+                
+                if (diseasedetailType == "checkboxplus"){
+
+                    $("#"+[diseasedetailid]).prop("checked", false)
+                    $("#"+[diseasedetailid+"text"]).val("")
+
+                } else if (diseasedetailType == "customtext") {
+                    $("#"+diseasedetail_id+"").val("")
+                }
+                else {
+
+                    $("#"+[diseasedetailid]).prop("checked", false)
+
+                }
+
+            } else {
+
+                    $("#"+[diseaseid]).prop("checked", false)
+
+                    if (diseasedetailType == "checkboxplus"){
+
+                        $("#"+[diseasedetailid]).prop("checked", false)
+                        $("#"+[diseasedetailid+"text"]).val("")
+    
+                    } else if (diseasedetailType == "customtext") {
+                        $("#"+diseasedetail_id+"").val("")
+                    }
+                    else {
+                        $("#"+[diseasedetailid]).prop("checked", false)
+                    }
+            }
         }
 
         $.ajax({
@@ -268,9 +308,34 @@ function SelectddlEn(hn,en) {
         // $( "#checkboxOther" ).prop( "checked", false )
 
         // เซ็ทส่วนขวา ให้พร้อมกรอก
-        for (var index = 0; index < localStorage.length; index++) {
-            $(""+localStorage.idDs_+[index]+"").prop("checked", false)
-            $(""+localStorage.idDsdt_+[index]+"").prop("checked", false)
+        for (var index = 0; index < eiei.length; index++) {
+            var diseaseid = eiei[index].disease_id;
+            var diseasedetailid = eiei[index].diseasedetail_id;
+            var diseasedetailType = eiei[index].diseasedetail_Type;
+
+            if ([index] == 0) {
+
+                    $("#"+[diseaseid]).prop("checked", false)
+                    $("#"+[diseasedetailid]).prop("checked", false)
+
+            } else if (eiei[index].disease_id == eiei[index-1].disease_id){
+                
+                if (diseasedetailType == "checkboxplus"){
+
+                    $("#"+[diseasedetailid]).prop("checked", false)
+                    $("#"+[diseasedetailid+"text"]).prop("checked", false)
+
+                } else {
+
+                    $("#"+[diseasedetailid]).prop("checked", false)
+
+                }
+
+            } else {
+
+                    $("#"+[diseaseid]).prop("checked", false)
+                    $("#"+[diseasedetailid]).prop("checked", false)
+            }
         }
 
         var cData_en = [];
@@ -329,7 +394,7 @@ function SelectddlEn(hn,en) {
                         document.getElementById("txtpt_age").value = json_response[0].patient_age;
                         document.getElementById("date-visit").value = json_response[0].patient_visit_date;
                         // document.getElementById("date-visit").setAttribute("value",json_response[0].visit_date);
-                        document.getElementById("txtpt_drname").value = json_response[0].patient_doctorname;
+                        // document.getElementById("txtpt_drname").value = json_response[0].patient_doctorname;
                         document.getElementById("date_first_visit").value = json_response[count_response].patient_visit_date;
         
                         sessionStorage.setItem("patient_name", json_response[0].patient_name);
@@ -395,7 +460,7 @@ function cs_dbEn(_Hn){
 
     $.ajax({
         type: "GET",
-        url: "https://localhost:44306/api/LabResult?hncode="+_Hn,
+        url: "https://localhost:44306/api/LabResult?hncode="+sessionStorage.hncode+"&ht_siteid="+sessionStorage.userSITE+"",
         dataType: 'json',
         success: function (response) {
 
@@ -429,7 +494,7 @@ function getDBLabResult(){
 
     $.ajax({
         type: "GET",
-        url: "https://localhost:44306/api/LabResult?hncode="+sessionStorage.hncode,
+        url: "https://localhost:44306/api/LabResult?hncode="+sessionStorage.hncode+"&ht_siteid="+sessionStorage.userSITE+"",
         dataType: 'json',
         // contentType: 'application/json; charset=utf-8',
         success: function (response) {
@@ -450,7 +515,7 @@ function getDBXRayResult(){
 
     $.ajax({
         type: "GET",
-        url: "https://localhost:44306/api/XrayResult?hncode="+sessionStorage.hncode,
+        url: "https://localhost:44306/api/XrayResult?hncode="+sessionStorage.hncode+"&ht_siteid="+sessionStorage.userSITE+"",
         dataType: 'json',
         // contentType: 'application/json; charset=utf-8',
         success: function (response) {
@@ -1260,11 +1325,11 @@ function getDoctorcase(){
 
 //ดึงข้อมูล patient ทั้งหมด
 async function allgetData(){
-    var drcase = document.getElementById("selectsetDoctorcase").value;
+    // var drcase = document.getElementById("selectsetDoctorcase").value;
     $('#Modal1').modal('show');
         var inputHN = sessionStorage.hncode;
-        updateHTRegistry(inputHN,sessionStorage.userID,drcase)
-        retrieve(inputHN,sessionStorage.userID,drcase)
+        // updateHTRegistry(inputHN,sessionStorage.userID,drcase)
+        // retrieve(inputHN,sessionStorage.userID,drcase)
     $('#Modal1').modal('hide');
 }
 function updateHTRegistry(inputHN,update,drcase)
@@ -1282,306 +1347,6 @@ function updateHTRegistry(inputHN,update,drcase)
     });
 }
 
-/*
-//call api visit?hncode
-function retrieve(inputHN,update,drcase)
-{
-    $.ajax({
-        type: "GET",
-        url: "http://172.18.62.245/ImedWebApi/api/AllData?hncode="+inputHN+"&update="+update+"&drcase="+drcase,
-        dataType: 'jsonp',
-        success: function (response) {
-            if (response != ""){
-                toastr.success('บันทึกข้อมูลสำเร็จ');
-                location.reload();
-            }
-            $('#Modal1').modal('hide');
-        },error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-            toastr.error();('ไม่สามารถบันทึกข้อมูลได้');
-            $('#Modal1').modal('hide');
-            console.log("+++++++++++++++++++++++++  Bot notification failed, error is '" + thrownError + "' " + jqXHR.responseText);
-        }
-    }); 
-}
-*/
-
-/*
-function oc_DM(){
-    console.log("texsssss")
-}
-*/
-/*
-function Readyindex(){
-    formdata = {
-        "name": 'Baseline Condition', 
-    }
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:44306/api/Config",
-        dataType: 'json',
-        data: formdata,
-        success: function (response) {
-            var json_response =JSON.parse(response);
-            console.log(json_response)
-            var diseaseX = "";
-            for (var y in json_response) {
-                var disease = json_response[y].disease
-                var disease_Type = json_response[y].disease_Type
-                console.log(disease)
-                if(diseaseX == ""){
-                    diseaseX = disease
-                }
-                else{
-                    diseaseX = diseaseX + "  " + disease
-                }
-                if(disease_Type = checkbox){
-                    checkbox();
-                }
-                
-            function checkbox(){
-                diseaseX = diseaseX.split("  ");
-                diseaseX = [...new Set(diseaseX)]; 
-                console.log(diseaseX)
-
-                diseaseL = diseaseX.length;
-                console.log(diseaseL)
-                console.log(diseaseX)
-                var diseaseXF = ""
-                var diseaseFUN = ""
-                for (i = 0; i < diseaseL;i++){
-                    
-                    diseaseXF += '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input"  onClick="oc_'+ diseaseX[i] +'()' +'"id="cv_'+ diseaseX[i] +'"  value="false"  onchange="this.value=this.checked? true : false" ><label class="custom-control-label" for="cv_'+ diseaseX[i] +'">'+ diseaseX[i] +'</label></div>';
-                    document.getElementById("Baselinedisease").innerHTML = diseaseXF
-                    console.log(diseaseXF)
-
-                }
-            }
-            formdata = {
-                "Disease": disease, 
-            }
-            console.log(formdata)
-            var diseasedetailXF = "";
-            $.ajax({
-                type: "GET",
-                url: "https://localhost:44306/api/Config",
-                dataType: 'json',
-                data: formdata,
-                success: function (response) {
-                    var data = JSON.parse(response);
-                    console.log(data)
-                    for (var y in data) {
-                        var diseasedetail = data[y].diseasedetail
-                        var diseasedetail_Type = data[y].diseasedetail_type
-                        console.log(diseasedetail)
-                        console.log(diseasedetail_Type)
-                            if(diseasedetail_Type = checkbox){
-                                checkbox()
-                            }
-                            function checkbox(){
-                                if(diseasedetailXF == ""){
-                                    diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="true_'+diseasedetail+'" id="cv_'+diseasedetail+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" style="display:none;" id = "'+diseasedetail+'" for="cv_'+diseasedetail+'>'+diseasedetail+'</label></div>';
-                                }
-                                else{
-                                    diseasedetailXF = diseasedetailXF + '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="true_'+diseasedetail+'" id="cv_'+diseasedetail+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" style="display:none;" id = "'+diseasedetail+'" for="cv_'+diseasedetail+'>'+diseasedetail+'</label></div>';
-                                }
-                                console.log(diseasedetailXF)
-                            }
-                            
-                }
-                }
-            })
-        }} 
-    })
-    console.log(disease)
-}
-*/
-/*
-function Readyindex(){
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:44306/api/Config?Disease=all",
-        dataType: 'json',
-        success: function (response) {
-            var alllabel = JSON.parse(response);
-            var fristlabel = ""
-            var FNNlabel = ""
-            for(var y in alllabel){
-                var label = alllabel[y].name
-                frlabel = ""
-                if(frlabel == ""){
-                    frlabel = '<div class="border-top"><div class="form-group row"><label class="col-md-3 text-right">'+label+'</label><div class="col-md-9">'
-                    fristlabel = frlabel
-                    disease(fristlabel)
-                }
-            }
-    function disease(fristlabel){
-    formdata = {
-        "name": label, 
-    }
-    var fristlabelFN = ""
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:44306/api/Config",
-        dataType: 'json',
-        data: formdata,
-        success: function (response) {
-            var json_disease =JSON.parse(response);
-            var disease_detail = ""
-            FNNlabel = "";
-            disease_detail = fristlabel
-            for (var y in json_disease) {
-                var disease = json_disease[y].disease
-                var disease_Type = json_disease[y].disease_Type
-                var diseaseid = json_disease[y].disease_id
-                if(disease_Type == "checkbox"){
-                    checkbox();
-                }else if(disease_Type == "checkboxend"){
-                    checkboxend();
-                }else{
-                    console.log("---------------ERROR---------------")
-                }
-
-        function checkboxend(){
-            var disease_end = ""
-            if(disease_end == ""){
-                disease_end = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasecheckboxend(this);" id="'+ diseaseid +'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label></div>'
-            }else{
-                disease_end = disease_end  + '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasecheckboxend(this);" id="'+ diseaseid +'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label></div>'
-            }
-            disease_end = disease_end + '<div class="col-sm-9"><input type="hidden" class="form-control" id="inputdoctorcase'+diseaseid+'"><select class="form-control" style="display:none;" id="Doctor'+diseaseid+'" value=""></select></div>'
-            disease_detail = disease_detail + disease_end 
-            FNNlabel += disease_detail
-            //document.getElementById("fristlabel").innerHTML = FNNlabel
-        }
-        
-        function checkbox(){
-        formdata = {
-            "Disease": disease
-        }
-        var diseasedetailXF = "";
-        var diseaseT = "";
-        diseaseT = disease;
-        var diseaseTid = "";
-        diseaseTid = diseaseid;
-        $.ajax({
-                type: "GET",
-                url: "https://localhost:44306/api/Config",
-                dataType: 'json',
-                data: formdata,
-                success: function (response) {
-                    var json_diseasedetail = JSON.parse(response);
-                    for (var y in json_diseasedetail){
-                        var diseasedetail = json_diseasedetail[y].diseasedetail
-                        var diseasedetail_type = json_diseasedetail[y].diseasedetail_type
-                        var diseasedetailid = json_diseasedetail[y].diseasedetail_id
-                        var diseasedetailplaceholder = json_diseasedetail[y].diseasedetail_placeholder
-                        diseasedetailXF = "";
-
-                        if(diseasedetail_type == "customtext"){
-                            customtext();
-                        }else if (diseasedetail_type == "checkbox"){
-                            checkbox();
-                        }else if (diseasedetail_type == "checkboxplus"){
-                            checkboxplus();
-                        }else{
-                            console.log("++++++++error++++++++")
-                        }
-                        
-                        function customtext(){
-                            if(diseasedetailXF == ""){
-                                diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseTid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseTid +'">'+ diseaseT +'</label>' + '<div style="display:none;" id='+diseaseTid+'Hide><div class="form-group row "><div class="input-group "><div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><label for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div><div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'" placeholder="'+diseasedetailplaceholder+'"></div></div></div>'
-                            }else{
-                                diseasedetailXF = diseasedetailXF + '<div class="form-group row "><div class="input-group "><div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><label for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div><div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'" placeholder="'+diseasedetailplaceholder+'"></div></div></div>'
-                            }
-                        }
-                        function checkbox(){
-                            if(diseasedetailXF == ""){
-                                diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseTid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseTid +'">'+ diseaseT +'</label>' + '<div style="display:none;" id='+diseaseTid+'Hide><div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div>'
-                            }else{
-                                diseasedetailXF = diseasedetailXF + '<div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div></div>'
-                            }
-                        }
-                        function checkboxplus(){
-                            if(diseasedetailXF == ""){
-                                diseasedetailXF = '<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseTid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseTid +'">'+ diseaseT +'</label>' + '<div style="display:none;" id='+diseaseTid+'Hide><div class="input-group">  <div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div>  </div> <div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'text" placeholder="'+diseasedetailplaceholder+'"></div></div>'
-                            }else{
-                                diseasedetailXF = diseasedetailXF + '<div class="input-group ">  <div class=" col-form-label"><div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasedetail(this);" id="'+diseasedetailid+'" value="false" onchange="this.value=this.checked? true : false"><label class="custom-control-label" for="'+diseasedetailid+'">'+diseasedetail+'</label></div>  </div> <div class="input-group-append"><input type="text"  maxlength="250" class="col-sm-9 form-control " id="'+diseasedetailid+'text" placeholder="'+diseasedetailplaceholder+'"></div></div>'
-                            }
-
-                        }
-                    }
-                    diseasedetailXF = diseasedetailXF  + '<div class="col-sm-9"><input type="hidden" class="form-control" id="inputdoctorcase'+diseaseTid+'"><select class="form-control" id="Doctor'+diseaseTid+'" value=""></select></div>'
-                    disease_detail = disease_detail + diseasedetailXF  
-                    disease_detail = disease_detail + '</div></div>'
-                    FNNlabel += disease_detail
-                    //document.getElementById("fristlabel").innerHTML = FNNlabel
-                }
- 
-        })
-        }
-
-    }
-    }
-    })
-}
-
-}
-})
-}
-*/
-// function foridDs() {
-//     $.ajax({
-//         type: "GET",
-//         url: "https://localhost:44306/api/Config?Name=all",
-//         dataType: 'json',
-//         success: function (response) {
-//             var json_diseaseid = JSON.parse(response);
-//             var val = json_diseaseid
-//             var io = ""
-            
-//             for (let i = 0; i < val.length; i++) {
-//                var id =  json_diseaseid[i].disease_id
-
-//                if( i == 0 ){
-//                    io = JSON.stringify(id)
-//                }
-//                else if ( json_diseaseid[i].disease_id != json_diseaseid[i-1].disease_id ){
-//                    io += " "+JSON.stringify(id)
-//                }
-//             }
-//             var res = io.split(" ");
-//             localStorage.setItem("DISEASE_ID",res);
-            
-//         }
-//     })
-// }
-
-// function foridDsDt() {
-//     $.ajax({
-//         type: "GET",
-//         url: "https://localhost:44306/api/Config?Disease_id=all&ht_siteid="+sessionStorage.userSITE,
-//         dataType: 'json',
-//         success: function (response) {
-//             var json_diseaseid = JSON.parse(response);
-//             var val = json_diseaseid
-//             var io = ""
-            
-//             for (let i = 0; i < val.length; i++) {
-//                var id =  json_diseaseid[i].diseasedetail_id
-
-//                if( i == 0 ){
-//                    io = JSON.stringify(id)
-//                }
-//                else if ( json_diseaseid[i].diseasedetail_id != json_diseaseid[i-1].diseasedetail_id ){
-//                    io += " "+JSON.stringify(id)
-//                }
-//             }
-//             var res = io.split(" ");
-//             localStorage.setItem("DISEASE_DETAIL_ID",res);
-            
-//         }
-//     })
-// }
 var eiei = {};
 function test(){
 
@@ -1594,7 +1359,6 @@ function test(){
             var json_diseasedetail = JSON.parse(response);
             var namelabel = "";
             eiei = json_diseasedetail
-            console.log(eiei)
 
             //var row$ = $('<div class="border-top"/>');
 
@@ -1756,19 +1520,6 @@ function doctor(diseaseid){
     return disease_end;
 }
 
-// function storage_data (db_, data_ds, data_dsdt) {
-//     var diseaseid = JSON.stringify(data_ds)
-//     var diseasedetailid = JSON.stringify(data_dsdt)
-
-//     eiei = {[diseaseid]: {
-//         [diseaseid] : false ,
-//         [diseasedetailid] : false
-//         }
-//     }
-//     return eiei
-// }
-
-
 // อิอิ1
 function submitData_Patient() { //บันทึกข้อมูลพื้นฐานของคนไข้ 
     // var drcase = document.getElementById("selectsetDoctorcase").value;
@@ -1794,23 +1545,29 @@ function submitData_Patient() { //บันทึกข้อมูลพื้�
                     for (var index = 0; index < eiei.length; index++) {
                         var diseaseid = eiei[index].disease_id;
                         var diseasedetailid = eiei[index].diseasedetail_id;
-                        // var diseasedetailType = eiei[index].diseasedetail_Type;
+                        var diseasedetailType = eiei[index].diseasedetail_Type;
             
                         if ([index] == 0) {
-                            var newdata = {
+            
+                            data = {
                                 [diseaseid] : {
                                     [diseaseid] : document.getElementById([diseaseid]).value,
                                     [diseasedetailid] : document.getElementById([diseasedetailid]).value
                                 }
                             }
-                            data = newdata
             
                         } else if (eiei[index].disease_id == eiei[index-1].disease_id){
+                            
+                            if (diseasedetailType == "checkboxplus"){
             
-                            const new_ds_dt_id = [diseasedetailid]
-                            const new_ds_dt_value = document.getElementById([diseasedetailid]).value
+                                data[diseaseid][diseasedetailid] = document.getElementById([diseasedetailid]).value,
+                                data[diseaseid][diseasedetailid+"text"] = document.getElementById([diseasedetailid+"text"]).value
             
-                            data[diseaseid][new_ds_dt_id] = new_ds_dt_value
+                            } else {
+            
+                               data[diseaseid][diseasedetailid] = document.getElementById([diseasedetailid]).value
+            
+                            }
             
                         } else {
                                 data[diseaseid] = {
@@ -1900,23 +1657,29 @@ function submitData_Patient() { //บันทึกข้อมูลพื้�
                         for (var index = 0; index < eiei.length; index++) {
                             var diseaseid = eiei[index].disease_id;
                             var diseasedetailid = eiei[index].diseasedetail_id;
-                            // var diseasedetailType = eiei[index].diseasedetail_Type;
+                            var diseasedetailType = eiei[index].diseasedetail_Type;
                 
                             if ([index] == 0) {
-                                var newdata = {
+                
+                                data = {
                                     [diseaseid] : {
                                         [diseaseid] : document.getElementById([diseaseid]).value,
                                         [diseasedetailid] : document.getElementById([diseasedetailid]).value
                                     }
                                 }
-                                data = newdata
                 
                             } else if (eiei[index].disease_id == eiei[index-1].disease_id){
+                                
+                                if (diseasedetailType == "checkboxplus"){
                 
-                                const new_ds_dt_id = [diseasedetailid]
-                                const new_ds_dt_value = document.getElementById([diseasedetailid]).value
+                                    data[diseaseid][diseasedetailid] = document.getElementById([diseasedetailid]).value,
+                                    data[diseaseid][diseasedetailid+"text"] = document.getElementById([diseasedetailid+"text"]).value
                 
-                                data[diseaseid][new_ds_dt_id] = new_ds_dt_value
+                                } else {
+                
+                                   data[diseaseid][diseasedetailid] = document.getElementById([diseasedetailid]).value
+                
+                                }
                 
                             } else {
                                     data[diseaseid] = {
@@ -1978,23 +1741,29 @@ function UpdateBaseInfo(){
         for (var index = 0; index < eiei.length; index++) {
             var diseaseid = eiei[index].disease_id;
             var diseasedetailid = eiei[index].diseasedetail_id;
-            // var diseasedetailType = eiei[index].diseasedetail_Type;
+            var diseasedetailType = eiei[index].diseasedetail_Type;
 
             if ([index] == 0) {
-                var newdata = {
+
+                data = {
                     [diseaseid] : {
                         [diseaseid] : document.getElementById([diseaseid]).value,
                         [diseasedetailid] : document.getElementById([diseasedetailid]).value
                     }
                 }
-                data = newdata
 
             } else if (eiei[index].disease_id == eiei[index-1].disease_id){
+                
+                if (diseasedetailType == "checkboxplus"){
 
-                const new_ds_dt_id = [diseasedetailid]
-                const new_ds_dt_value = document.getElementById([diseasedetailid]).value
+                    data[diseaseid][diseasedetailid] = document.getElementById([diseasedetailid]).value,
+                    data[diseaseid][diseasedetailid+"text"] = document.getElementById([diseasedetailid+"text"]).value
 
-                data[diseaseid][new_ds_dt_id] = new_ds_dt_value
+                } else {
+
+                   data[diseaseid][diseasedetailid] = document.getElementById([diseasedetailid]).value
+
+                }
 
             } else {
                     data[diseaseid] = {
@@ -2012,7 +1781,7 @@ function UpdateBaseInfo(){
         "_update_by" : sessionStorage.userID,
         "_ht_siteid" : sessionStorage.userSITE
     }
-6
+
     $.ajax({
         type: "POST",
         url: "https://localhost:44306/api/Disease",
@@ -2027,5 +1796,4 @@ function UpdateBaseInfo(){
             toastr.error('แก้ไขข้อมูลไม่สำเร็จ');
         }
     });
-
 }
