@@ -18,6 +18,7 @@ var _lastvitalsign = [];
 var _allergy = [];
 var _xrayResult = [];
 
+
 //เมื่อกรอก hncode จะเรียกข้อมูลของคนไข้ 
 function getPatient(db_hn) {  
     if (db_hn == "") {
@@ -72,6 +73,10 @@ function SelectddlEn(hn,en) {
         // $( "#od_gout" ).prop( "checked", false )
         // $( "#sc_osa" ).prop( "checked", false)
         // $( "#checkboxOther" ).prop( "checked", false )
+        for (var index = 0; index < localStorage.length; index++) {
+            $(""+localStorage.idDs_+[index]+"").prop("checked", false)
+            $(""+localStorage.idDsdt_+[index]+"").prop("checked", false)
+        }
 
         $.ajax({
 
@@ -262,10 +267,16 @@ function SelectddlEn(hn,en) {
         // $( "#sc_osa" ).prop( "checked", false)
         // $( "#checkboxOther" ).prop( "checked", false )
 
+        // เซ็ทส่วนขวา ให้พร้อมกรอก
+        for (var index = 0; index < localStorage.length; index++) {
+            $(""+localStorage.idDs_+[index]+"").prop("checked", false)
+            $(""+localStorage.idDsdt_+[index]+"").prop("checked", false)
+        }
+
         var cData_en = [];
         $.ajax({
             type: "GET",
-            url: "https://localhost:44306/api/Patients?hncode="+_Hn,
+            url: "https://localhost:44306/api/Patients?hncode="+_Hn+"&ht_siteid="+sessionStorage.userSITE+"", 
             dataType: 'json',
             success: function (response) {
                 
@@ -293,116 +304,85 @@ function SelectddlEn(hn,en) {
                         }
                     }
 
-                if (cData_en.length > 0){
-                    //document.getElementById("tag_image").innerHTML = "<img src=\""+cData_en[0].patientphoto+"\"  onerror=\"imageError()\" class=\"image\">";
-                    document.getElementById("txtpt_name").value = cData_en[0].patient_name;
-                    document.getElementById("txtpt_dob").value = cData_en[0].patient_dob;
-                    document.getElementById("txtpt_age").value = cData_en[0].patient_age;
-                    document.getElementById("date-visit").value = cData_en[0].patient_visit_date;
-                    // document.getElementById("date-visit").setAttribute("value",json_response[0].visit_date);
-                    //document.getElementById("txtpt_drname").value = cData_en[0].patient_doctorname;
-                    document.getElementById("date_first_visit").value = json_response[count_response].patient_visit_date;
-    
-                    sessionStorage.setItem("patient_name", cData_en[0].patient_name);
-                    sessionStorage.setItem("en", cData_en[0].patient_en);
-                    sessionStorage.setItem("age", cData_en[0].patient_age);
-                    sessionStorage.setItem("visit_date",cData_en[0].patient_visit_date)
-                    
-                    Stamp_En = cData_en[0].patient_en
+                    if (cData_en.length > 0){
+                        //document.getElementById("tag_image").innerHTML = "<img src=\""+cData_en[0].patientphoto+"\"  onerror=\"imageError()\" class=\"image\">";
+                        document.getElementById("txtpt_name").value = cData_en[0].patient_name;
+                        document.getElementById("txtpt_dob").value = cData_en[0].patient_dob;
+                        document.getElementById("txtpt_age").value = cData_en[0].patient_age;
+                        document.getElementById("date-visit").value = cData_en[0].patient_visit_date;
+                        // document.getElementById("date-visit").setAttribute("value",json_response[0].visit_date);
+                        //document.getElementById("txtpt_drname").value = cData_en[0].patient_doctorname;
+                        document.getElementById("date_first_visit").value = json_response[count_response].patient_visit_date;
+        
+                        sessionStorage.setItem("patient_name", cData_en[0].patient_name);
+                        sessionStorage.setItem("en", cData_en[0].patient_en);
+                        sessionStorage.setItem("age", cData_en[0].patient_age);
+                        sessionStorage.setItem("visit_date",cData_en[0].patient_visit_date)
+                        
+                        Stamp_En = cData_en[0].patient_en
 
-                }else{
-                    
-                   //document.getElementById("tag_image").innerHTML = "<img src=\""+json_response[0].patientphoto+"\" onerror=\"imageError()\" class=\"image\">";
-                    document.getElementById("txtpt_name").value = json_response[0].patient_name;
-                    document.getElementById("txtpt_dob").value = json_response[0].patient_dob;
-                    document.getElementById("txtpt_age").value = json_response[0].patient_age;
-                    document.getElementById("date-visit").value = json_response[0].patient_visit_date;
-                    // document.getElementById("date-visit").setAttribute("value",json_response[0].visit_date);
-                    document.getElementById("txtpt_drname").value = json_response[0].patient_doctorname;
-                    document.getElementById("date_first_visit").value = json_response[count_response].patient_visit_date;
-    
-                    sessionStorage.setItem("patient_name", json_response[0].patient_name);
-                    sessionStorage.setItem("en", json_response[0].patient_en);
-                    sessionStorage.setItem("age", json_response[0].patient_age);
-                    sessionStorage.setItem("visit_date",json_response[0].patient_visit_date)
-                    Stamp_En = json_response[0].patient_en
-                    
-                }
-                
-                //getDoctorcasebyHN();
-                var selectsetEn = document.getElementById("selectsetEn");
-                var option = document.createElement("option");
-                document.getElementById("selectsetEn").innerHTML = "";
-                for (var i = 0; i < data.length; i++) {
-                    if (!db_HyperEn.includes(data[i].patient_en)){
-                        var option = document.createElement("option");
-                        option.text = data[i].patient_en;
-                        selectsetEn.add(option, selectsetEn[i]); 
+                    }else{
+                        
+                    //document.getElementById("tag_image").innerHTML = "<img src=\""+json_response[0].patientphoto+"\" onerror=\"imageError()\" class=\"image\">";
+                        document.getElementById("txtpt_name").value = json_response[0].patient_name;
+                        document.getElementById("txtpt_dob").value = json_response[0].patient_dob;
+                        document.getElementById("txtpt_age").value = json_response[0].patient_age;
+                        document.getElementById("date-visit").value = json_response[0].patient_visit_date;
+                        // document.getElementById("date-visit").setAttribute("value",json_response[0].visit_date);
+                        document.getElementById("txtpt_drname").value = json_response[0].patient_doctorname;
+                        document.getElementById("date_first_visit").value = json_response[count_response].patient_visit_date;
+        
+                        sessionStorage.setItem("patient_name", json_response[0].patient_name);
+                        sessionStorage.setItem("en", json_response[0].patient_en);
+                        sessionStorage.setItem("age", json_response[0].patient_age);
+                        sessionStorage.setItem("visit_date",json_response[0].patient_visit_date)
+                        Stamp_En = json_response[0].patient_en
+                        
                     }
+                
+                    //เรียง EN ของ patient_en();
+                    var selectsetEn = document.getElementById("selectsetEn");
+                    var option = document.createElement("option");
+                    document.getElementById("selectsetEn").innerHTML = "";
+                    for (var i = 0; i < data.length; i++) {
+                        if (!db_HyperEn.includes(data[i].patient_en)){
+                            var option = document.createElement("option");
+                            option.text = data[i].patient_en;
+                            selectsetEn.add(option, selectsetEn[i]); 
+                        }
+                    }
+                
+                    document.getElementById("selectsetEn").value = Stamp_En;
+                    console.log(Stamp_En)
+                    $('#alert_nDataModal').modal('hide');
+
+                    let current_datetime = new Date(sessionStorage.visit_date)
+                    let _dateVisit = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
+                    
+                    toastr.success('EN : '+Stamp_En+' <br> Visit Date : '+_dateVisit+'', 'ดึงข้อมูลคนไข้สำเร็จ');
+                
+
+                } else {
+
+                    clear_IndexPage()
+
                 }
-                
-                document.getElementById("selectsetEn").value = Stamp_En;
-                console.log(Stamp_En)
-                $('#alert_nDataModal').modal('hide');
 
-                let current_datetime = new Date(sessionStorage.visit_date)
-                let _dateVisit = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
-                
-                toastr.success('EN : '+Stamp_En+' <br> Visit Date : '+_dateVisit+'', 'ดึงข้อมูลคนไข้สำเร็จ');
-                
+                getDBLabResult();
+                getDBXRayResult();
 
-            } else {
-
-                clear_IndexPage()
-
-            }
-
-            getDBLabResult();
-            getDBXRayResult();
-
-            },
-            error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-                console.log("Error is '" + thrownError + "'");
-                //alert("Add new product failed, error is '" + thrownError + "'");
-            }
-        });
-
-    } else {
-        alert("กรุณาระบุ HN")
-    }   
-}
-//ฟังก์ชัน สำหรับset doctor case โดยใช้ hn
-/*
-function getDoctorcasebyHN()
-{
-    document.getElementById("selectsetDoctorcase").value = "";
-    if (sessionStorage.hncode != null || sessionStorage.hncode != ""){
-        $.ajax({
-            type: "GET",
-            url: "http://172.18.62.245/HTApi/api/Patients?hncode="+sessionStorage.hncode,
-            dataType: 'json',
-            success: function (response) {
-                if (response == null || response == ""){
-                    document.getElementById("butregister").style.visibility = "visible";
-                    document.getElementById("butretrieve").style.visibility = "hidden";
-                    document.getElementById("selectsetDoctorcase").value = "";
-                }else{
-                    document.getElementById("butregister").style.visibility = "hidden";
-                    document.getElementById("butretrieve").style.visibility = "visible";
-                    var JSON_doctor = JSON.parse(response);
-                    var docname = JSON_doctor[0].doctorcase;
-                    document.getElementById("selectsetDoctorcase").value = docname;
+                },
+                error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+                    console.log("Error is '" + thrownError + "'");
+                    //alert("Add new product failed, error is '" + thrownError + "'");
                 }
-            },
-            error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-            }
-        });
-    }else{
+            });
 
-
-    }
+        } else {
+            alert("กรุณาระบุ HN")
+        }   
 }
-*/
+
 //ฟังก์ชัน สำหรับนำข้อมูลเฉพาะ EN ที่มีใน DB EMR ดึงมาตรวจสอบกับ Visit ทั้งหมด
 function cs_dbEn(_Hn){ 
 
@@ -877,158 +857,7 @@ function submitPatient() {
     }
 }
 
-function submitData_Patient() { //บันทึกข้อมูลพื้นฐานของคนไข้ 
-    var drcase = document.getElementById("selectsetDoctorcase").value;
-    var inputHN = sessionStorage.hncode;
-    updateHTRegistry(inputHN,sessionStorage.userID,drcase)
-    var str_cvrisk_data = false;
-
-    //Get ข้อมูลเพื่อเช็คข้อมูลซ้ำใน Database OutStanding
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:44306/api/BaseInfo?hncode="+sessionStorage.hncode,
-        dataType: 'json',
-        // contentType: 'application/json; charset=utf-8',
-          success: function (data) {
-
-            console.log(data)
-
-            if (data == ""){
-
-                var formdata = {
-                    "_hncode": sessionStorage.hncode,
-                    "_first_clinic_visit": document.getElementById('date_first_visit').value , 
-                    "_bl_hypertension_year":  document.getElementById('bl_hypertension_year').value , 
-                    "_bl_unknow": document.getElementById('bl_unknow').checked , 
-                    "_bl_resistant_hypertension": document.getElementById('bl_resistant_hypertension').checked,
-                    "_cv_dm": document.getElementById('cv_dm').checked,
-                    "_cv_dlp": document.getElementById('cv_dlp').checked,
-                    "_cv_smoking": document.getElementById('cv_smoking').checked,
-                    "_cv_cda": document.getElementById('cv_cda').checked,
-                    "_od_af": document.getElementById('od_af').checked,
-                    "_od_copd": document.getElementById('od_copd').checked,
-                    "_od_gout": document.getElementById('od_gout').checked,
-                    "_sc_osa": document.getElementById('sc_osa').checked,
-                    "_sc_other": document.getElementById('sc_other').checked,
-                    "_update_by": sessionStorage.userID
-                }
-
-                $.ajax({
-                    
-                    type: "POST",
-                    url: "http://172.18.62.245/HTApi/api/Data_personnal/",
-                    dataType: 'json',
-                    data: formdata,
-                    // contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                      
-                        // alert("บันทึกข้อมูลสำเร็จ")
-
-                        toastr.success('บันทึกข้อมูลสำเร็จ')
-                        getCv_Risk()
-
-                    },
-                    error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-                        // console.log("Add new product failed, error is '" + thrownError + "'");
-                        toastr.success('บันทึกข้อมูลไม่สำเร็จ')
-                    }           
-                });
-
-                  var hncode = sessionStorage.hncode;
-                  var cvrisk_date =  $('#cvrisk_date').val();
-                  var cvrisk_percent = $('#cvrisk_percent').val();
-                  var cvrisk_multiply = $('#cvrisk_multiply').val();
-
-                  if (hncode != "" && cvrisk_date != "" && cvrisk_percent != "" && cvrisk_multiply != "") {
-
-                    $.ajax({
-                    
-                        type: "POST",
-                        url: "http://172.18.62.245/HTApi/api/CvRisk/",
-                        dataType: 'json',
-                        data:{ 
-                                "_hncode" : hncode ,
-                                "_cvrisk_date" : cvrisk_date,
-                                "_cvrisk_percent" : cvrisk_percent,
-                                "_cvrisk_multiply" : cvrisk_multiply, 
-                                "_update_by" : sessionStorage.userID
-                            },
-                      
-                        success: function (data) {
-                            // console.log(data);
-                            $('#confirm_patientModal').modal('hide');
-                            // alert("บันทึกข้อมูลสำเร็จ")
-
-                            toastr.success('บันทึกข้อมูลสำเร็จ')
-                            getCv_Risk()
-                        },
-                        error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-                            // console.log("Add new product failed, error is '" + thrownError + "'");
-                            toastr.error('บันทึกข้อมูลไม่สำเร็จ')
-                        }           
-                      });
-                  }
-
-            } else {
-
-                var json_response =  JSON.parse(data)
-
-                var response = json_response[0]
-    
-                var checkhncode = response.hncode
-    
-                if (checkhncode != sessionStorage.hncode){
-    
-                    var formdata = {
-                        "_hncode": sessionStorage.hncode,
-                        "_first_clinic_visit": document.getElementById('date_first_visit').value , 
-                        // "_bl_hypertension_year":  document.getElementById('bl_hypertension_year').value , 
-                        // "_bl_unknow": document.getElementById('bl_unknow').checked , 
-                        // "_bl_resistant_hypertension": document.getElementById('bl_resistant_hypertension').checked,
-                        // "_cv_dm": document.getElementById('cv_dm').checked,
-                        // "_cv_dlp": document.getElementById('cv_dlp').checked,
-                        // "_cv_smoking": document.getElementById('cv_smoking').checked,
-                        // "_cv_cda": document.getElementById('cv_cda').checked,
-                        // "_od_af": document.getElementById('od_af').checked,
-                        // "_od_copd": document.getElementById('od_copd').checked,
-                        // "_od_gout": document.getElementById('od_gout').checked,
-                        // "_sc_osa": document.getElementById('sc_osa').checked,
-                        // "_sc_other": document.getElementById('sc_other').checked,
-                        "_update_by": sessionStorage.userID
-                    }
-                     
-                      $.ajax({
-                    
-                        type: "POST",
-                        url: "http://172.18.62.245/HTApi/api/Data_personnal/",
-                        dataType: 'json',
-                        data: formdata,
-                        // contentType: 'application/json; charset=utf-8',
-                          success: function (data) {
-                             
-                            //   alert("บันทึกข้อมูลสำเร็จ")
-                              toastr.success('บันทึกข้อมูลสำเร็จ')
-                              getCv_Risk()
-                              
-                          },
-                          error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-                              // console.log("Add new product failed, error is '" + thrownError + "'");
-                              toastr.error('บันทึกข้อมูลไม่สำเร็จ')
-                          }           
-                      });
-                }else{
-                
-                    alert("มีการบันทึกข้อมูลคนไข้แล้ว")
-                }
-            }
-            
-          },
-          error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-              // console.log("Add new product failed, error is '" + thrownError + "'");
-          }
-      });
-}
-
+// ดึงข้อมูล HN จาก DB มาโชว์
 function getCv_Risk(){
 
     clear_cvrisk()
@@ -1040,13 +869,13 @@ function getCv_Risk(){
             $.ajax({
     
                 type: "GET",
-                url: "https://localhost:44306/api/CVLAB?hncode="+sessionStorage.hncode,
+                url: "https://localhost:44306/api/CVLAB?hncode="+sessionStorage.hncode+"&ht_siteid="+sessionStorage.userSITE+"",
                 dataType: 'json',
                 success: function (response) {
 
                     if (response == null || response == ""){
 
-                        document.getElementById("colum_cvriskname").innerHTML =   ""
+                        document.getElementById("colum_cvriskname").innerHTML = ""
 
                         document.getElementById("loading-cvrisk").innerHTML =  ""
                         // document.getElementById("loading-cvrisk").innerHTML = "<h3 align='Center'>ไม่พบข้อมูล</h3>";
@@ -1064,7 +893,7 @@ function getCv_Risk(){
                         $.ajax({
                     
                             type: "GET",
-                            url: "https://localhost:44306/api/BaseInfo?hncode="+sessionStorage.hncode,
+                            url: "https://localhost:44306/api/Disease?_hncode="+sessionStorage.hncode+"&_ht_siteid="+localStorage.userSITE+"",
                             dataType: 'json',
                             success: function (data) {
 
@@ -1072,139 +901,131 @@ function getCv_Risk(){
                     
                                     document.getElementById("BaseCheck").innerHTML = "<button type='button' class='btn btn-primary' onclick='submitData_Patient()'>SAVE</button>"
                     
-                                    document.getElementById("bl_hypertension_year").value = '';   
-                                    document.getElementById("sc_other").innerHTML = "";
+                                    // document.getElementById("bl_hypertension_year").value = '';   
+                                    // document.getElementById("sc_other").innerHTML = "";
                                     document.getElementById("cvrisk_date").value = '';
                                     document.getElementById("cvrisk_percent").value = '';
                                     document.getElementById("cvrisk_multiply").value = '';   
-                                    $( "#bl_unknow" ).prop( "checked", false )
-                                    $( "#bl_resistant_hypertension" ).prop( "checked", false )
-                                    $( "#cv_dm" ).prop( "checked", false )
-                                    $( "#cv_dlp" ).prop( "checked", false)
-                                    $( "#cv_smoking" ).prop( "checked", false)
-                                    $( "#cv_cda" ).prop( "checked", false )
-                                    $( "#od_af" ).prop( "checked", false)
-                                    $( "#od_copd" ).prop( "checked", false)
-                                    $( "#od_gout" ).prop( "checked", false )
-                                    $( "#sc_osa" ).prop( "checked", false)
+                                    // $( "#bl_unknow" ).prop( "checked", false )
+                                    // $( "#bl_resistant_hypertension" ).prop( "checked", false )
+                                    // $( "#cv_dm" ).prop( "checked", false )
+                                    // $( "#cv_dlp" ).prop( "checked", false)
+                                    // $( "#cv_smoking" ).prop( "checked", false)
+                                    // $( "#cv_cda" ).prop( "checked", false )
+                                    // $( "#od_af" ).prop( "checked", false)
+                                    // $( "#od_copd" ).prop( "checked", false)
+                                    // $( "#od_gout" ).prop( "checked", false )
+                                    // $( "#sc_osa" ).prop( "checked", false)
                     
-                                    $( "#checkboxOther" ).prop( "checked", false )
-                                    ck_Other()
+                                    // $( "#checkboxOther" ).prop( "checked", false )
+                                    // ck_Other()
+                                    for (var index = 0; index < localStorage.length; index++) {
+                                        $(""+localStorage.idDs_+[index]+"").prop("checked", false)
+                                        $(""+localStorage.idDsdt_+[index]+"").prop("checked", false)
+                                    }
                     
                                     console.log("null")
                                 }else{
                     
-                                    var json_response =  JSON.parse(data)
-                    
-                                    var response = json_response[0]
-                    
                                     if (response != "error"){
                                     
                                         document.getElementById("BaseCheck").innerHTML =  "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirm_editModal' >EDIT</button>"
-                                        document.getElementById("bl_hypertension_year").setAttribute("value",response.bl_hypertension_year);
-                                        document.getElementById("sc_other").innerHTML = (response.sc_other);
-                             
-                                    if (cv_risk_list.length > 0){
 
-                                        if (cv_risk_list.length < 3){
+                                        if (cv_risk_list.length > 0){
 
-                                            document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
+                                            if (cv_risk_list.length < 3){
 
-                                            document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
-    
-                                            //ตารางแสดง CV-Risk
-                                            for (var i = 0 ; i < cv_risk_list.length ; i++){
+                                                document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
 
-                                                let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
-                                                let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
-                        
-                                                var cv_table_id = "display_cvrisk"+i+""
-                        
-                                                document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
-                                                                                                      
+                                                document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
+        
+                                                //ตารางแสดง CV-Risk
+                                                for (var i = 0 ; i < cv_risk_list.length ; i++){
+
+                                                    let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
+                                                    let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
+                            
+                                                    var cv_table_id = "display_cvrisk"+i+""
+                            
+                                                    document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
+                                                                                                        "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
+                                                                                                        "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
+                                                                                                        
+                                                }
+
+                                                spinning();
+        
+                                            }else{
+
+                                                document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
+        
+                                                document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
+        
+                                                for (var i = 0 ; i < 3 ; i++){
+                            
+                                                    let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
+                                                    let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
+
+                                                    var cv_table_id = "display_cvrisk"+i+""
+                                                    
+                                                    document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
+                                                                                                        "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
+                                                                                                        "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
+                                                    }
+
+                                                spinning();
+        
                                             }
-
-                                            spinning();
-    
-                                        }else{
-
-                                            document.getElementById("loading-cvrisk").innerHTML =  "<div class='modal-dialog modal-dialog-centered justify-content-center' role='document'> <span class='fa fa-spinner fa-spin fa-3x'></span>"
-    
-                                            document.getElementById("colum_cvriskname").innerHTML =   "<td align='center'><h6>DATE</h6></td><td align='center'><h6>PERCENT</h6></td><td align='center'><h6>TIMES</h6></td>"
-    
-                                            for (var i = 0 ; i < 3 ; i++){
-                        
-                                                let current_datetime = new Date(cv_risk_list[i].cvrisk_date)
-                                                let _dateCvRisk = ("0"+(current_datetime.getDate())).slice(-2) + "-" + ("0"+(current_datetime.getMonth()+1)).slice(-2) + "-" + current_datetime.getFullYear()
-
-                                                var cv_table_id = "display_cvrisk"+i+""
-                                                
-                                                document.getElementById(cv_table_id).innerHTML +=   "<td align='center'><label class='col-md-12 text-center'>"+_dateCvRisk+"</label></td>"+
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_percent+" %</label></td>"  +
-                                                                                                    "<td align='center'><label class='col-md-12 text-center'>"+cv_risk_list[i].cvrisk_multiply+" เท่า</label></td>" 
-                                            }
-
-                                            spinning();
-    
                                         }
-                                    }
+
+                                        var DataJson = JSON.parse(data)
+                                        var Topic = DataJson.TopicDataJson[0]
 
                                         //แสดงการ Check  True/False
-                                        $( "#bl_unknow" ).prop( "checked", response.bl_unknow )
-                                        $( "#bl_resistant_hypertension" ).prop( "checked", response.bl_resistant_hypertension )
-                                        $( "#cv_dm" ).prop( "checked", response.cv_dm )
-                                        $( "#cv_dlp" ).prop( "checked", response.cv_dlp )
-                                        $( "#cv_smoking" ).prop( "checked", response.cv_smoking )
-                                        $( "#cv_cda" ).prop( "checked", response.cv_cda )
-                                        $( "#od_af" ).prop( "checked", response.od_af )
-                                        $( "#od_copd" ).prop( "checked", response.od_copd )
-                                        $( "#od_gout" ).prop( "checked", response.od_gout )
-                                        $( "#sc_osa" ).prop( "checked", response.sc_osa )
+                                        // $( "#bl_unknow" ).prop( "checked", response.bl_unknow )
+                                        // $( "#bl_resistant_hypertension" ).prop( "checked", response.bl_resistant_hypertension )
+                                        // $( "#cv_dm" ).prop( "checked", response.cv_dm )
+                                        // $( "#cv_dlp" ).prop( "checked", response.cv_dlp )
+                                        // $( "#cv_smoking" ).prop( "checked", response.cv_smoking )
+                                        // $( "#cv_cda" ).prop( "checked", response.cv_cda )
+                                        // $( "#od_af" ).prop( "checked", response.od_af )
+                                        // $( "#od_copd" ).prop( "checked", response.od_copd )
+                                        // $( "#od_gout" ).prop( "checked", response.od_gout )
+                                        // $( "#sc_osa" ).prop( "checked", response.sc_osa )
                     
                                         //set ค่า BaseInfo ให้ value เป็นค่าตามที่เรียกข้อมูลมาแสดง
-                                        document.getElementById("bl_unknow").setAttribute("value",response.bl_unknow)
-                                        document.getElementById("bl_resistant_hypertension").setAttribute("value",response.bl_resistant_hypertension)
-                                        document.getElementById("cv_dm").setAttribute("value",response.cv_dm)
-                                        document.getElementById("cv_dlp").setAttribute("value",response.cv_dlp )
-                                        document.getElementById("cv_smoking").setAttribute("value",response.cv_smoking )
-                                        document.getElementById("cv_cda").setAttribute("value",response.cv_cda)
-                                        document.getElementById("od_af").setAttribute("value",response.od_af)
-                                        document.getElementById("od_copd").setAttribute("value",response.od_copd)
-                                        document.getElementById("od_gout").setAttribute("value",response.od_gout )
-                                        document.getElementById("sc_osa").setAttribute("value", response.sc_osa)
-                    
- 
-                                        if (response.sc_other == "" || response.sc_other == null){
-                                        
-                                        }else{
-                    
-                                            $( "#checkboxOther" ).prop( "checked", true )
-                                            ck_Other()
-                    
-                                        }
+                                        // document.getElementById("bl_unknow").setAttribute("value",response.bl_unknow)
+                                        // document.getElementById("bl_resistant_hypertension").setAttribute("value",response.bl_resistant_hypertension)
+                                        // document.getElementById("cv_dm").setAttribute("value",response.cv_dm)
+                                        // document.getElementById("cv_dlp").setAttribute("value",response.cv_dlp )
+                                        // document.getElementById("cv_smoking").setAttribute("value",response.cv_smoking )
+                                        // document.getElementById("cv_cda").setAttribute("value",response.cv_cda)
+                                        // document.getElementById("od_af").setAttribute("value",response.od_af)
+                                        // document.getElementById("od_copd").setAttribute("value",response.od_copd)
+                                        // document.getElementById("od_gout").setAttribute("value",response.od_gout )
+                                        // document.getElementById("sc_osa").setAttribute("value", response.sc_osa)
+
                                     }else{
                     
-                                        document.getElementById("bl_hypertension_year").value = '';
+                                        // document.getElementById("bl_hypertension_year").value = '';
                                         document.getElementById("sc_other").innerHTML = "";
                                         document.getElementById("cvrisk_date").value = '';
                                         document.getElementById("cvrisk_percent").value = '';
                                         document.getElementById("cvrisk_multiply").value = '';   
                     
-                                        $( "#bl_unknow" ).prop( "checked", false )
-                                        $( "#bl_resistant_hypertension" ).prop( "checked", false )
-                                        $( "#cv_dm" ).prop( "checked", false )
-                                        $( "#cv_dlp" ).prop( "checked", false)
-                                        $( "#cv_smoking" ).prop( "checked", false)
-                                        $( "#cv_cda" ).prop( "checked", false )
-                                        $( "#od_af" ).prop( "checked", false)
-                                        $( "#od_copd" ).prop( "checked", false)
-                                        $( "#od_gout" ).prop( "checked", false )
-                                        $( "#sc_osa" ).prop( "checked", false)
+                                        // $( "#bl_unknow" ).prop( "checked", false )
+                                        // $( "#bl_resistant_hypertension" ).prop( "checked", false )
+                                        // $( "#cv_dm" ).prop( "checked", false )
+                                        // $( "#cv_dlp" ).prop( "checked", false)
+                                        // $( "#cv_smoking" ).prop( "checked", false)
+                                        // $( "#cv_cda" ).prop( "checked", false )
+                                        // $( "#od_af" ).prop( "checked", false)
+                                        // $( "#od_copd" ).prop( "checked", false)
+                                        // $( "#od_gout" ).prop( "checked", false )
+                                        // $( "#sc_osa" ).prop( "checked", false)
                     
-                                        $( "#checkboxOther" ).prop( "checked", false )
-                                        ck_Other()
+                                        // $( "#checkboxOther" ).prop( "checked", false )
+                                        // ck_Other()
                                     }
                                 }
                               },
@@ -1222,54 +1043,13 @@ function getCv_Risk(){
     
     
         }
-}   
-
-//ฟังก์ชันแก้ไขข้อมูล BaseInfo
-function UpdateBaseInfo(){
-    var drcase = document.getElementById("selectsetDoctorcase").value;
-    var inputHN = sessionStorage.hncode;
-    updateHTRegistry(inputHN,sessionStorage.userID,drcase)
-    var str_cvrisk_data = false;
-    formdata = {
-        "_hncode": sessionStorage.hncode,
-        "_bl_hypertension_year":  document.getElementById('bl_hypertension_year').value , 
-        "_bl_unknow": document.getElementById('bl_unknow').checked , 
-        "_bl_resistant_hypertension": document.getElementById('bl_resistant_hypertension').checked,
-        "_cv_dm": document.getElementById('cv_dm').checked,
-        "_cv_dlp": document.getElementById('cv_dlp').checked,
-        "_cv_smoking": document.getElementById('cv_smoking').checked,
-        "_cv_cda": document.getElementById('cv_cda').checked,
-        "_od_af": document.getElementById('od_af').checked,
-        "_od_copd": document.getElementById('od_copd').checked,
-        "_od_gout": document.getElementById('od_gout').checked,
-        "_sc_osa": document.getElementById('sc_osa').checked,
-        "_sc_other": document.getElementById('sc_other').value,
-        "_update_by": sessionStorage.userID
-    }
-
-    $.ajax({
-        type: "PUT",
-        url: "http://172.18.62.245/HTApi/api/Data_personnal",
-        dataType: 'json',
-        data: formdata,
-        success: function (data) {
-            $('#confirm_editModal').modal('hide');
-            toastr.success('แก้ไขข้อมูลสำเร็จ');
-            getCv_Risk()
-            
-        },
-        error: function (jqXHR, xhr, ajaxOptions, thrownError) {
-            toastr.error('แก้ไขข้อมูลไม่สำเร็จ');
-        }
-    });
-
 }
-
+            
 //ฟังก์ชันบันทึกข้อมูล CVrisk
 function addcvrisk_Patient(){
-    var drcase = document.getElementById("selectsetDoctorcase").value;
+    // var drcase = document.getElementById("selectsetDoctorcase").value;
     var inputHN = sessionStorage.hncode;
-    updateHTRegistry(inputHN,sessionStorage.userID,drcase)
+    // updateHTRegistry(inputHN,sessionStorage.userID,drcase)
     var str_cvrisk_data = false;
 
     $.ajax({
@@ -1277,7 +1057,7 @@ function addcvrisk_Patient(){
         type: "GET",
         url: "http://172.18.62.245/HTApi/api/CvRisk?hncode="+sessionStorage.hncode,
         dataType: 'json',
-        success: function (data) {
+        success: function (data) {  
             
             var hncode = sessionStorage.hncode;
             var cvrisk_date =  $('#cvrisk_date').val();
@@ -1402,36 +1182,37 @@ function clear_IndexPage(){
 
     $('#alert_nDataModal').modal('hide');
 
-    document.getElementById("tag_image").innerHTML = "";
+    document.getElementById("tag_image").innerHTML = ""
     document.getElementById("txtpt_name").value = ""
     document.getElementById("txtpt_dob").value = ""
     document.getElementById("txtpt_age").value = ""
     document.getElementById("date-visit").value = ""
-    document.getElementById("txtpt_drname").value = ""
 
     sessionStorage.removeItem("hncode");
     sessionStorage.removeItem("en");
     sessionStorage.removeItem("age");
 
-    document.getElementById("bl_hypertension_year").value = '';
-    document.getElementById("sc_other").innerHTML = "";
     document.getElementById("cvrisk_date").value = '';
     document.getElementById("cvrisk_percent").value = '';
     document.getElementById("cvrisk_multiply").value = '';   
 
-    $( "#bl_unknow" ).prop( "checked", false )
-    $( "#bl_resistant_hypertension" ).prop( "checked", false )
-    $( "#cv_dm" ).prop( "checked", false )
-    $( "#cv_dlp" ).prop( "checked", false)
-    $( "#cv_smoking" ).prop( "checked", false)
-    $( "#cv_cda" ).prop( "checked", false )
-    $( "#od_af" ).prop( "checked", false)
-    $( "#od_copd" ).prop( "checked", false)
-    $( "#od_gout" ).prop( "checked", false )
-    $( "#sc_osa" ).prop( "checked", false)
+    // $( "#bl_unknow" ).prop( "checked", false )
+    // $( "#bl_resistant_hypertension" ).prop( "checked", false )
+    // $( "#cv_dm" ).prop( "checked", false )
+    // $( "#cv_dlp" ).prop( "checked", false)
+    // $( "#cv_smoking" ).prop( "checked", false)
+    // $( "#cv_cda" ).prop( "checked", false )
+    // $( "#od_af" ).prop( "checked", false)
+    // $( "#od_copd" ).prop( "checked", false)
+    // $( "#od_gout" ).prop( "checked", false )
+    // $( "#sc_osa" ).prop( "checked", false)
 
-    $( "#checkboxOther" ).prop( "checked", false )
-    ck_Other()
+    // $( "#checkboxOther" ).prop( "checked", false )
+    // ck_Other()
+    for (var index = 0; index < localStorage.length; index++) {
+        $(""+localStorage.idDs_+[index]+"").prop("checked", false)
+        $(""+localStorage.idDsdt_+[index]+"").prop("checked", false)
+    }
 
 
     document.getElementById("cvrisk_date").value = '';
@@ -1453,7 +1234,7 @@ function clear_IndexPage(){
     alert("ไม่พบข้อมูลคนไข้")
 
 }
-/*
+
 //ดึงข้อมูล แพทย์ประจำเคส
 function getDoctorcase(){
     $.ajax({
@@ -1476,7 +1257,7 @@ function getDoctorcase(){
         }
     });
 }
-*/
+
 //ดึงข้อมูล patient ทั้งหมด
 async function allgetData(){
     var drcase = document.getElementById("selectsetDoctorcase").value;
@@ -1748,6 +1529,60 @@ function Readyindex(){
 })
 }
 */
+// function foridDs() {
+//     $.ajax({
+//         type: "GET",
+//         url: "https://localhost:44306/api/Config?Name=all",
+//         dataType: 'json',
+//         success: function (response) {
+//             var json_diseaseid = JSON.parse(response);
+//             var val = json_diseaseid
+//             var io = ""
+            
+//             for (let i = 0; i < val.length; i++) {
+//                var id =  json_diseaseid[i].disease_id
+
+//                if( i == 0 ){
+//                    io = JSON.stringify(id)
+//                }
+//                else if ( json_diseaseid[i].disease_id != json_diseaseid[i-1].disease_id ){
+//                    io += " "+JSON.stringify(id)
+//                }
+//             }
+//             var res = io.split(" ");
+//             localStorage.setItem("DISEASE_ID",res);
+            
+//         }
+//     })
+// }
+
+// function foridDsDt() {
+//     $.ajax({
+//         type: "GET",
+//         url: "https://localhost:44306/api/Config?Disease_id=all&ht_siteid="+sessionStorage.userSITE,
+//         dataType: 'json',
+//         success: function (response) {
+//             var json_diseaseid = JSON.parse(response);
+//             var val = json_diseaseid
+//             var io = ""
+            
+//             for (let i = 0; i < val.length; i++) {
+//                var id =  json_diseaseid[i].diseasedetail_id
+
+//                if( i == 0 ){
+//                    io = JSON.stringify(id)
+//                }
+//                else if ( json_diseaseid[i].diseasedetail_id != json_diseaseid[i-1].diseasedetail_id ){
+//                    io += " "+JSON.stringify(id)
+//                }
+//             }
+//             var res = io.split(" ");
+//             localStorage.setItem("DISEASE_DETAIL_ID",res);
+            
+//         }
+//     })
+// }
+var eiei = {};
 function test(){
 
     $.ajax({
@@ -1756,80 +1591,56 @@ function test(){
         dataType: 'json',
         success: function (response) {
 
-    var json_diseasedetail = JSON.parse(response);
-    var namelabel = "";
+            var json_diseasedetail = JSON.parse(response);
+            var namelabel = "";
+            eiei = json_diseasedetail
+            console.log(eiei)
 
-    //var row$ = $('<div class="border-top"/>');
+            //var row$ = $('<div class="border-top"/>');
 
-    for (let index = 0; index < json_diseasedetail.length; index++) {
-        var namelabel = json_diseasedetail[index].name;
-        var disease = json_diseasedetail[index].disease;
-        var diseaseid = json_diseasedetail[index].disease_id;
-        var diseasedetail = json_diseasedetail[index].diseasedetail
-        var diseasedetailid = json_diseasedetail[index].diseasedetail_id
-        var disease_Type = json_diseasedetail[index].disease_Type
-        var diseasedetail_Type = json_diseasedetail[index].diseasedetail_Type
-        var diseasedetailplaceholder = json_diseasedetail[index].diseasedetail_placeholder
+            for (let index = 0; index < json_diseasedetail.length; index++) {
+                var namelabel = json_diseasedetail[index].name;
+                var disease = json_diseasedetail[index].disease;
+                var diseaseid = json_diseasedetail[index].disease_id;
+                var diseasedetail = json_diseasedetail[index].diseasedetail
+                var diseasedetailid = json_diseasedetail[index].diseasedetail_id
+                var disease_Type = json_diseasedetail[index].disease_Type
+                var diseasedetail_Type = json_diseasedetail[index].diseasedetail_Type
+                var diseasedetailplaceholder = json_diseasedetail[index].diseasedetail_placeholder
 
-        if(index == 0){
-            
-            //row$.append($('<div class="form-group row/>').html('<label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'));
-            if (disease_Type == "checkbox"){
-                var fristdisease = checkbox(diseaseid,disease)
-            }else if(disease_Type == "checkboxend"){
-                var fristdisease = checkboxend(diseaseid,disease)
-            }else{
-                console.log("fristdisease --- Error ---")
-            }
-            if(diseasedetail_Type == "checkboxdetail"){
-                var fristdiseasedetail = checkboxdetail(diseasedetailid,diseasedetail,diseaseid)
-            }else if(diseasedetail_Type == "customtext"){
-                var fristdiseasedetail = customtext(diseasedetailid,diseasedetail,diseasedetailplaceholder)
-            }else if(diseasedetail_Type == "checkboxplus"){
-                var fristdiseasedetail = checkboxplus(diseasedetailid,diseasedetail,diseasedetailplaceholder)
-            }else if(diseasedetail_Type == "alltext"){
-                var fristdiseasedetail = alltext(diseasedetailid,diseasedetailplaceholder)
-            }else if(diseasedetail_Type == "doctor"){
-                var fristdiseasedetail = doctor(diseaseid)
-            }else{
-                fristdiseasedetail = "";
-            }
+                // localStorage.setItem("idDsDt",JSON.stringify(diseasedetailid));
 
-            $("#fristlabel").append('<div class="border-top"><br><div class="form-group row" id=json_"'+index+'><label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'+fristdisease+'<div style="display:none;" class='+diseaseid+'Hide>'+fristdiseasedetail+'');
-            //$("#fristlabel").append(fristdisease)
-            //$("#fristlabel").append('<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasecheckboxend(this);" id="'+ diseaseid +'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label></div>')
-            //$("#fristlabel").append(fristdiseasedetail)
-            //$("#fristlabel").append(row$);
-        }else{
-            if (disease_Type == "checkbox"){
-                var fristdisease = checkbox(diseaseid,disease)
-            }else if(disease_Type == "checkboxend"){
-                var fristdisease = checkboxend(diseaseid,disease)
-            }else{
-                console.log("fristdisease --- Error ---")
-            }
-            if(diseasedetail_Type == "checkboxdetail"){
-                var fristdiseasedetail = checkboxdetail(diseasedetailid,diseasedetail)
-            }else if(diseasedetail_Type == "customtext"){
-                var fristdiseasedetail = customtext(diseasedetailid,diseasedetail,diseasedetailplaceholder)
-            }else if(diseasedetail_Type == "checkboxplus"){
-                var fristdiseasedetail = checkboxplus(diseasedetailid,diseasedetail,diseasedetailplaceholder)
-            }else if(diseasedetail_Type == "alltext"){
-                var fristdiseasedetail = alltext(diseasedetailid,diseasedetailplaceholder)
-            }else if(diseasedetail_Type == "doctor"){
-                var fristdiseasedetail = doctor(diseaseid)
-            }else{
-                fristdiseasedetail = "";
-            }
+                if(index == 0){
+                    
+                    //row$.append($('<div class="form-group row/>').html('<label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'));
+                    if (disease_Type == "checkbox"){
+                        var fristdisease = checkbox(diseaseid,disease)
+                    }else if(disease_Type == "checkboxend"){
+                        var fristdisease = checkboxend(diseaseid,disease)
+                    }else{
+                        console.log("fristdisease --- Error ---")
+                    }
+                    if(diseasedetail_Type == "checkboxdetail"){
+                        var fristdiseasedetail = checkboxdetail(diseasedetailid,diseasedetail,diseaseid)
+                    }else if(diseasedetail_Type == "customtext"){
+                        var fristdiseasedetail = customtext(diseasedetailid,diseasedetail,diseasedetailplaceholder)
+                    }else if(diseasedetail_Type == "checkboxplus"){
+                        var fristdiseasedetail = checkboxplus(diseasedetailid,diseasedetail,diseasedetailplaceholder)
+                    }else if(diseasedetail_Type == "alltext"){
+                        var fristdiseasedetail = alltext(diseasedetailid,diseasedetailplaceholder)
+                    }else if(diseasedetail_Type == "doctor"){
+                        var fristdiseasedetail = doctor(diseaseid)
+                    }else{
+                        fristdiseasedetail = "";
+                    }
 
+                    $("#fristlabel").append('<div class="border-top"><br><div class="form-group row" id=json_"'+index+'><label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'+fristdisease+'<div style="display:none;" class='+diseaseid+'Hide>'+fristdiseasedetail+'');
+                    //$("#fristlabel").append(fristdisease)
+                    //$("#fristlabel").append('<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_diseasecheckboxend(this);" id="'+ diseaseid +'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label></div>')
+                    //$("#fristlabel").append(fristdiseasedetail)
+                    //$("#fristlabel").append(row$);
 
-            if(json_diseasedetail[index].name != json_diseasedetail[index-1].name){
-                //row$.append($('<div class="form-group row/>').html('<label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'));
-                $("#fristlabel").append('<div class="border-top"><br><div class="form-group row " id=json_"'+index+'><label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'+fristdisease+'<div style="display:none;" class='+diseaseid+'Hide>'+fristdiseasedetail+'');
-                //$("#fristlabel").append(row$);
-            }
-            else{
-                if(json_diseasedetail[index].disease != json_diseasedetail[index-1].disease){
+                }else{
                     if (disease_Type == "checkbox"){
                         var fristdisease = checkbox(diseaseid,disease)
                     }else if(disease_Type == "checkboxend"){
@@ -1852,33 +1663,65 @@ function test(){
                     }
 
 
-                $("#fristlabel").append('<div class="form-group row"><label class="col-md-3 text-right"></label><div class="col-md-9" id="Baselinedisease">'+fristdisease + '<div style="display:none;" class='+diseaseid+'Hide>' +fristdiseasedetail)
-                //$("#fristlabel").append('<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label>' + '<div style="display:none;" id='+diseaseid+'Hide>')
-                //$("#fristlabel").append(fristdiseasedetail)
-                }else{
-                    if(json_diseasedetail[index].diseasedetail != json_diseasedetail[index-1].diseasedetail){
-                        if(diseasedetail_Type == "checkboxdetail"){
-                            var fristdiseasedetail = checkboxdetail(diseasedetailid,diseasedetail)
-                        }else if(diseasedetail_Type == "customtext"){
-                            var fristdiseasedetail = customtext(diseasedetailid,diseasedetail,diseasedetailplaceholder)
-                        }else if(diseasedetail_Type == "checkboxplus"){
-                            var fristdiseasedetail = checkboxplus(diseasedetailid,diseasedetail,diseasedetailplaceholder)
-                        }else if(diseasedetail_Type == "alltext"){
-                            var fristdiseasedetail = alltext(diseasedetailid,diseasedetailplaceholder)
-                        }else if(diseasedetail_Type == "doctor"){
-                            var fristdiseasedetail = doctor(diseaseid)
-                        }else{
-                            fristdiseasedetail = "";
-                        }
-                    $("#fristlabel").append('<div style="display:none;" class='+diseaseid+'Hide><div class="form-group row"><label class="col-md-3 text-right"></label><div class="col-md-9" id="Baselinedisease"></label><div class="col-md-9 disease">'+fristdiseasedetail)
+                    if(json_diseasedetail[index].name != json_diseasedetail[index-1].name){
+                        //row$.append($('<div class="form-group row/>').html('<label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'));
+                        $("#fristlabel").append('<div class="border-top"><br><div class="form-group row " id=json_"'+index+'><label class="col-md-3 text-right">'+namelabel+'</label><div class="col-md-9">'+fristdisease+'<div style="display:none;" class='+diseaseid+'Hide>'+fristdiseasedetail+'');
+                        //$("#fristlabel").append(row$);
                     }
+                    else{
+                        if(json_diseasedetail[index].disease != json_diseasedetail[index-1].disease){
+                            if (disease_Type == "checkbox"){
+                                var fristdisease = checkbox(diseaseid,disease)
+                            }else if(disease_Type == "checkboxend"){
+                                var fristdisease = checkboxend(diseaseid,disease)
+                            }else{
+                                console.log("fristdisease --- Error ---")
+                            }
+                            if(diseasedetail_Type == "checkboxdetail"){
+                                var fristdiseasedetail = checkboxdetail(diseasedetailid,diseasedetail)
+                            }else if(diseasedetail_Type == "customtext"){
+                                var fristdiseasedetail = customtext(diseasedetailid,diseasedetail,diseasedetailplaceholder)
+                            }else if(diseasedetail_Type == "checkboxplus"){
+                                var fristdiseasedetail = checkboxplus(diseasedetailid,diseasedetail,diseasedetailplaceholder)
+                            }else if(diseasedetail_Type == "alltext"){
+                                var fristdiseasedetail = alltext(diseasedetailid,diseasedetailplaceholder)
+                            }else if(diseasedetail_Type == "doctor"){
+                                var fristdiseasedetail = doctor(diseaseid)
+                            }else{
+                                fristdiseasedetail = "";
+                            }
+
+
+                        $("#fristlabel").append('<div class="form-group row"><label class="col-md-3 text-right"></label><div class="col-md-9" id="Baselinedisease">'+fristdisease + '<div style="display:none;" class='+diseaseid+'Hide>' +fristdiseasedetail)
+                        //$("#fristlabel").append('<div class="custom-control custom-checkbox mr-sm-2"><input type="checkbox" class="custom-control-input" onClick="oc_disease(this);" id="'+diseaseid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label>' + '<div style="display:none;" id='+diseaseid+'Hide>')
+                        //$("#fristlabel").append(fristdiseasedetail)
+                        }else{
+                            if(json_diseasedetail[index].diseasedetail != json_diseasedetail[index-1].diseasedetail){
+                                if(diseasedetail_Type == "checkboxdetail"){
+                                    var fristdiseasedetail = checkboxdetail(diseasedetailid,diseasedetail)
+                                }else if(diseasedetail_Type == "customtext"){
+                                    var fristdiseasedetail = customtext(diseasedetailid,diseasedetail,diseasedetailplaceholder)
+                                }else if(diseasedetail_Type == "checkboxplus"){
+                                    var fristdiseasedetail = checkboxplus(diseasedetailid,diseasedetail,diseasedetailplaceholder)
+                                }else if(diseasedetail_Type == "alltext"){
+                                    var fristdiseasedetail = alltext(diseasedetailid,diseasedetailplaceholder)
+                                }else if(diseasedetail_Type == "doctor"){
+                                    var fristdiseasedetail = doctor(diseaseid)
+                                }else{
+                                    fristdiseasedetail = "";
+                                }
+                            $("#fristlabel").append('<div style="display:none;" class='+diseaseid+'Hide><div class="form-group row"><label class="col-md-3 text-right"></label><div class="col-md-9" id="Baselinedisease"></label><div class="col-md-9 disease">'+fristdiseasedetail)
+                            }
+                        }
+                    }
+
+                }
             }
-            }
+            
         }
-    }
+    })
 }
-})
-}
+
 
 function checkbox(diseaseid,disease){
     var disease_end = '<div class="custom-control custom-checkbox mr-sm-2 "><input type="checkbox" class="custom-control-input" onClick="oc_disease(this)" id="'+diseaseid+'" value="false" onchange="this.value=this.checked? true : false" ><label class="custom-control-label"  for="'+ diseaseid +'">'+ disease +'</label>'
@@ -1913,4 +1756,332 @@ function doctor(diseaseid){
     return disease_end;
 }
 
-// 
+// function storage_data (db_, data_ds, data_dsdt) {
+//     var diseaseid = JSON.stringify(data_ds)
+//     var diseasedetailid = JSON.stringify(data_dsdt)
+
+//     eiei = {[diseaseid]: {
+//         [diseaseid] : false ,
+//         [diseasedetailid] : false
+//         }
+//     }
+//     return eiei
+// }
+
+
+// อิอิ1
+function submitData_Patient() { //บันทึกข้อมูลพื้นฐานของคนไข้ 
+    // var drcase = document.getElementById("selectsetDoctorcase").value;
+    var inputHN = sessionStorage.hncode;
+    // updateHTRegistry(inputHN,sessionStorage.userID,drcase)
+    var str_cvrisk_data = false;
+
+    //Get ข้อมูลเพื่อเช็คข้อมูลซ้ำใน Database OutStanding
+    $.ajax({
+        type: "GET",
+        url: "https://localhost:44306/api/Disease?_hncode="+sessionStorage.hncode+"&_ht_siteid="+localStorage.userSITE+"",
+        dataType: 'json',
+        // contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+
+            console.log(data)
+            
+            if (data == "") {
+                var sometinglikeData_Type_Json = function checked_data () {
+                    for (var index = 0; index < eiei.length; index++) {
+                        var diseaseid = eiei[index].disease_id;
+                        var diseasedetailid = eiei[index].diseasedetail_id;
+                        var diseasedetailType = eiei[index].diseasedetail_Type
+                        var data = ""
+
+                        if (index == 0) {
+                            data = {
+                                [diseaseid] : {
+                                    [diseaseid] : document.getElementById([diseaseid]).value
+                                }
+                            }
+
+                        } else if (eiei[index].disease_id != eiei[index-1].disease_id) {
+
+                            data += ","+{
+                                [diseaseid] : {
+                                    [diseaseid] : document.getElementById([diseaseid]).value
+                                }
+                            }
+                        }
+                    }
+                    return JSON.stringify(data)
+                }
+
+                var formdata = {
+                        "_hncode": sessionStorage.hncode,
+                        "_TopicDataJson" : sometinglikeData_Type_Json,
+                        "_update_by" : sessionStorage.userID,
+                        "_ht_siteid" : sessionStorage.userSITE
+                    }
+
+                $.ajax({
+                    
+                    type: "POST",
+                    url: "https://localhost:44306/api/Disease",
+                    dataType: 'json',
+                    data: formdata,
+                    // contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        
+                        // alert("บันทึกข้อมูลสำเร็จ")
+
+                        toastr.success('บันทึกข้อมูลสำเร็จ')
+
+                    },
+                    error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+                        // console.log("Add new product failed, error is '" + thrownError + "'");
+                        toastr.success('บันทึกข้อมูลไม่สำเร็จ')
+                    }           
+                });
+        
+                var hncode = sessionStorage.hncode;
+                var cvrisk_date =  $('#cvrisk_date').val();
+                var cvrisk_percent = $('#cvrisk_percent').val();
+                var cvrisk_multiply = $('#cvrisk_multiply').val();
+
+                if (hncode != "" && cvrisk_date != "" && cvrisk_percent != "" && cvrisk_multiply != "") {
+
+                    $.ajax({
+                    
+                        type: "POST",
+                        url: "http://172.18.62.245/HTApi/api/CvRisk/",
+                        dataType: 'json',
+                        data:{ 
+                                "_hncode" : hncode ,
+                                "_cvrisk_date" : cvrisk_date,
+                                "_cvrisk_percent" : cvrisk_percent,
+                                "_cvrisk_multiply" : cvrisk_multiply, 
+                                "_update_by" : sessionStorage.userID,
+                                "_ht_siteid" : sessionStorage.userSITE
+                            },
+                        
+                        success: function (data) {
+                            // console.log(data);
+                            $('#confirm_patientModal').modal('hide');
+                            // alert("บันทึกข้อมูลสำเร็จ")
+
+                            toastr.success('บันทึกข้อมูลสำเร็จ')
+                            getCv_Risk()
+                        },
+                        error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+                            // console.log("Add new product failed, error is '" + thrownError + "'");
+                            toastr.error('บันทึกข้อมูลไม่สำเร็จ')
+                        }           
+                    });
+                }
+            } else {
+
+                var json_response =  JSON.parse(data)
+
+                var response = json_response[0]
+    
+                var checkhncode = response.hncode
+    
+                if (checkhncode != sessionStorage.hncode){
+                    var sometinglikeData_Type_Json = function checked_data () {
+                        for (var index = 0; index < eiei.length; index++) {
+                            var diseaseid = eiei[index].disease_id;
+                            var diseasedetailid = eiei[index].diseasedetail_id;
+                            var diseasedetailType = eiei[index].diseasedetail_Type
+                            var data = ""
+    
+                            if (index == 0) {
+                                data = {
+                                    [diseaseid] : {
+                                        [diseaseid] : document.getElementById([diseaseid]).value
+                                    }
+                                }
+
+                            } else if (eiei[index].disease_id != eiei[index-1].disease_id) {
+    
+                                data += ","+{
+                                    [diseaseid] : {
+                                        [diseaseid] : document.getElementById([diseaseid]).value
+                                    }
+                                }
+                            }
+                        }
+                        return JSON.stringify(data)
+                    }
+    
+                    var formdata = {
+                        "_hncode": sessionStorage.hncode,
+                        "_TopicDataJson" : sometinglikeData_Type_Json,
+                        "_update_by" : sessionStorage.userID,
+                        "_ht_siteid" : sessionStorage.userSITE
+                    }
+                        
+                    $.ajax({
+                    
+                        type: "POST",
+                        url: "https://localhost:44306/api/Disease",
+                        dataType: 'json',
+                        data: formdata,
+                        // contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            
+                            //   alert("บันทึกข้อมูลสำเร็จ")
+                            toastr.success('บันทึกข้อมูลสำเร็จ')
+                            getCv_Risk()
+                            
+                        },
+                        error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+                            // console.log("Add new product failed, error is '" + thrownError + "'");
+                            toastr.error('บันทึกข้อมูลไม่สำเร็จ')
+                        }           
+                    });
+                } else {
+                    
+                    alert("มีการบันทึกข้อมูลคนไข้แล้ว")
+                }
+            }
+        },
+        error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+              // console.log("Add new product failed, error is '" + thrownError + "'");
+            }    
+    })
+}
+
+//ฟังก์ชันแก้ไขข้อมูล BaseInfo
+// function UpdateBaseInfo(){
+//     var inputHN = sessionStorage.hncode;
+//     // updateHTRegistry(inputHN,sessionStorage.userID,drcase)
+//     var str_cvrisk_data = false;
+
+    // var sometinglikeData_Type_Json = function checked_data () {
+
+    //     var data = {
+    //         Disease : []
+    //     };
+
+    //     for (var index = 0; index < eiei.length; index++) {
+    //         var diseaseid = eiei[index].disease_id;
+    //         var diseasedetailid = eiei[index].diseasedetail_id;
+    //         // var diseasedetailType = eiei[index].diseasedetail_Type;
+
+    //         if ([index] == 0) {
+    //             var newdata = {
+    //                 [diseaseid] : [
+    //                     {[diseaseid] : document.getElementById([diseaseid]).value},
+    //                     {[diseasedetailid] : document.getElementById([diseasedetailid]).value}
+    //                 ]
+    //             }
+    //             data.Disease.push(newdata)
+    //             // console.log(data)
+    //             return JSON.stringify(data)
+
+    //         } else if (eiei[index].disease_id == eiei[index-1].disease_id){
+
+//                 newdescription = {[diseasedetailid] : document.getElementById([diseasedetailid]).value}
+                    
+//                 data.Disease[data.Disease.length-1][diseaseid].push(newdescription)
+//                 // console.log(data)
+//                 return JSON.stringify(data)
+//             } else {
+                
+//                 var newdatanew = {
+//                     [diseaseid] : [
+//                         {[diseaseid] : document.getElementById([diseaseid]).value},
+//                         {[diseasedetailid] : document.getElementById([diseasedetailid]).value}
+//                     ]
+//                 }
+//                 data.Disease.push(newdatanew)
+//                 // console.log(newdatanew)
+//                 return JSON.stringify(data)
+//             }
+//         }
+//     }
+    
+//     var formdata = {
+//         "_hncode": sessionStorage.hncode,
+//         "_TopicDataJson" : sometinglikeData_Type_Json,
+//         "_update_by" : sessionStorage.userID,
+//         "_ht_siteid" : sessionStorage.userSITE
+//     }
+// 6
+//     $.ajax({
+//         type: "POST",
+//         url: "https://localhost:44306/api/Disease",
+//         dataType: 'json',
+//         data: formdata,
+//         success: function (data) {
+//             $('#confirm_editModal').modal('hide');
+//             toastr.success('แก้ไขข้อมูลสำเร็จ');
+//             // getCv_Risk()
+//         },
+//         error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+//             toastr.error('แก้ไขข้อมูลไม่สำเร็จ');
+//         }
+//     });
+
+// }
+
+function UpdateBaseInfo(){
+    var inputHN = sessionStorage.hncode;
+    // updateHTRegistry(inputHN,sessionStorage.userID,drcase)
+    var str_cvrisk_data = false;
+
+    var sometinglikeData_Type_Json = function checked_data () {
+
+        var data = {};
+
+        for (var index = 0; index < eiei.length; index++) {
+            var diseaseid = eiei[index].disease_id;
+            var diseasedetailid = eiei[index].diseasedetail_id;
+            // var diseasedetailType = eiei[index].diseasedetail_Type;
+
+            if ([index] == 0) {
+                var newdata = {
+                    [diseaseid] : {
+                        [diseaseid] : document.getElementById([diseaseid]).value,
+                        [diseasedetailid] : document.getElementById([diseasedetailid]).value
+                    }
+                }
+                data = newdata
+
+            } else if (eiei[index].disease_id == eiei[index-1].disease_id){
+
+                const new_ds_dt_id = [diseasedetailid]
+                const new_ds_dt_value = document.getElementById([diseasedetailid]).value
+
+                data[diseaseid][new_ds_dt_id] = new_ds_dt_value
+
+            } else {
+                    data[diseaseid] = {
+                        [diseaseid] : document.getElementById([diseaseid]).value,
+                        [diseasedetailid]:document.getElementById([diseasedetailid]).value
+                    }
+            }
+        }
+        return JSON.stringify(data)
+    }
+    
+    var formdata = {
+        "_hncode": sessionStorage.hncode,
+        "_TopicDataJson" : sometinglikeData_Type_Json,
+        "_update_by" : sessionStorage.userID,
+        "_ht_siteid" : sessionStorage.userSITE
+    }
+6
+    $.ajax({
+        type: "POST",
+        url: "https://localhost:44306/api/Disease",
+        dataType: 'json',
+        data: formdata,
+        success: function (data) {
+            $('#confirm_editModal').modal('hide');
+            toastr.success('แก้ไขข้อมูลสำเร็จ');
+            // getCv_Risk()
+        },
+        error: function (jqXHR, xhr, ajaxOptions, thrownError) {
+            toastr.error('แก้ไขข้อมูลไม่สำเร็จ');
+        }
+    });
+
+}

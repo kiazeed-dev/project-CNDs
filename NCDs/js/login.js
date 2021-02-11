@@ -93,6 +93,7 @@ function login(usr,pass,site) {
             var data = JSON.parse(str);
 
             sessionStorage.setItem("userID", data[0].ht_username);
+            sessionStorage.setItem("userSITE", data[0].ht_siteid);
             
             window.location = "index.html";
         }
